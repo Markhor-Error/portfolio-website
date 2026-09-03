@@ -1,0 +1,43 @@
+name: Build and publish deploy branch
+
+# Hostinger's Git deploy pulls repository contents, not build output. This builds
+# the site and pushes only dist/ to a `deploy` branch, which hPanel tracks —
+# so the main branch stays clean and every push here reaches the site.
+on:
+  push:
+    branches: ['claude/going-eagle-website-dev-gzkqxs', 'main']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy-branch
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Fail if the build produced broken internal links
+        run: node scripts/check-links.mjs
+
+      - name: Push dist/ to the deploy branch
+        run: |
+          cd dist
+          git init -q
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Build from ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" HEAD:deploy
