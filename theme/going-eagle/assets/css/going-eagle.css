@@ -1,0 +1,338 @@
+/* ==========================================================================
+   Going Eagle — child theme styles for Kadence
+
+   Scope note: Kadence Pro owns global layout, headers and typography. This file
+   defines the brand tokens and styles only the components the theme adds, so it
+   does not fight the Customizer. Set the matching palette in
+   Appearance > Customize > Colors so Kadence's own components agree with these.
+
+   Palette to enter in the Kadence Customizer:
+     Palette 1  #0d4f3c   brand (deep fairway)
+     Palette 2  #0a3d2e   brand hover
+     Palette 3  #9a6f1c   accent (brass)
+     Palette 4  #15211d   body text
+     Palette 5  #56635d   muted text
+     Palette 6  #e4e1d8   borders
+     Palette 7  #f4f2ec   subtle surface
+     Palette 8  #fbfaf7   page background
+   ========================================================================== */
+
+:root {
+  --ge-brand: #0d4f3c;
+  --ge-brand-hover: #0a3d2e;
+  --ge-brand-ink: #ffffff;
+  --ge-brand-soft: #e4efe9;
+  --ge-brand-border: #b9d4c7;
+
+  --ge-accent: #9a6f1c;
+  --ge-accent-soft: #fbf3e2;
+  --ge-accent-border: #e6cf9c;
+
+  --ge-surface: #ffffff;
+  --ge-surface-2: #f4f2ec;
+  --ge-text: #15211d;
+  --ge-muted: #56635d;
+  --ge-subtle: #7c8a83;
+  --ge-border: #e4e1d8;
+  --ge-border-strong: #cfcabd;
+
+  --ge-r-sm: 6px;
+  --ge-r-md: 10px;
+  --ge-r-lg: 16px;
+  --ge-r-xl: 24px;
+  --ge-r-pill: 999px;
+
+  --ge-shadow-sm: 0 1px 2px rgba(15, 32, 25, .06), 0 1px 3px rgba(15, 32, 25, .04);
+}
+
+/* Kadence ships a dark palette toggle; honour it if the site enables one. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --ge-brand: #48b98a;
+    --ge-brand-hover: #61cb9d;
+    --ge-brand-ink: #06231a;
+    --ge-brand-soft: #132c23;
+    --ge-brand-border: #235c47;
+    --ge-accent: #dfa84c;
+    --ge-accent-soft: #2b2416;
+    --ge-accent-border: #5c4a22;
+    --ge-surface: #141d19;
+    --ge-surface-2: #1b2622;
+    --ge-text: #eaf1ed;
+    --ge-muted: #a0aea7;
+    --ge-subtle: #7d8b84;
+    --ge-border: #29352f;
+    --ge-border-strong: #3b4a43;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Editorial byline
+   -------------------------------------------------------------------------- */
+
+.ge-byline {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  background: var(--ge-surface-2);
+  border: 1px solid var(--ge-border);
+  border-radius: var(--ge-r-lg);
+  padding: 1rem 1.25rem;
+  margin-block: 1.5rem;
+}
+.ge-byline--compact { padding: .75rem 1rem; align-items: center; }
+
+/* Initials monogram, not a portrait. The site does not use stock or
+   AI-generated images to represent real people. */
+.ge-byline__monogram {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: var(--ge-r-pill);
+  background: var(--ge-brand);
+  color: var(--ge-brand-ink);
+  font-weight: 700;
+  font-size: .9rem;
+}
+.ge-byline__photo {
+  flex-shrink: 0;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: var(--ge-r-pill);
+  object-fit: cover;
+}
+.ge-byline__line { margin: 0; font-size: .9rem; color: var(--ge-muted); line-height: 1.55; }
+.ge-byline__line strong { color: var(--ge-text); }
+.ge-byline__note { margin: .5rem 0 0; font-size: .78rem; color: var(--ge-subtle); line-height: 1.6; }
+
+/* --------------------------------------------------------------------------
+   Tools
+   -------------------------------------------------------------------------- */
+
+.ge-tool {
+  background: var(--ge-surface);
+  border: 1px solid var(--ge-border);
+  border-radius: var(--ge-r-xl);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  margin-block: 2rem;
+  box-shadow: var(--ge-shadow-sm);
+}
+
+.ge-tool__bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--ge-border);
+}
+
+.ge-hand { border: 0; margin: 0; padding: 0; display: flex; gap: 1rem; align-items: center; }
+.ge-hand legend {
+  float: left;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ge-subtle);
+  margin-right: .75rem;
+}
+.ge-hand label { display: inline-flex; align-items: center; gap: .5rem; margin: 0; font-size: .9rem; cursor: pointer; }
+.ge-hand input { width: auto; margin: 0; accent-color: var(--ge-brand); }
+
+.ge-modes {
+  display: flex;
+  gap: 2px;
+  background: var(--ge-surface-2);
+  border: 1px solid var(--ge-border);
+  border-radius: var(--ge-r-md);
+  padding: 3px;
+}
+.ge-mode {
+  font: inherit;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: .5em 1em;
+  border: 0;
+  border-radius: calc(var(--ge-r-md) - 2px);
+  background: transparent;
+  color: var(--ge-muted);
+}
+.ge-mode.is-on { background: var(--ge-surface); color: var(--ge-brand); box-shadow: var(--ge-shadow-sm); }
+
+.ge-q { border: 0; margin: 0 0 1.5rem; padding: 0; }
+.ge-q legend { font-size: 1rem; font-weight: 600; margin-bottom: .75rem; display: flex; align-items: center; gap: .75rem; }
+.ge-q__n {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: var(--ge-r-pill);
+  background: var(--ge-brand-soft);
+  color: var(--ge-brand);
+  font-size: .78rem;
+  font-weight: 700;
+}
+
+.ge-opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; }
+.ge-opts--wrap { grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr)); }
+.ge-opt {
+  font: inherit;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: .85em .6em;
+  text-align: center;
+  background: var(--ge-surface);
+  color: var(--ge-text);
+  border: 1px solid var(--ge-border-strong);
+  border-radius: var(--ge-r-md);
+  transition: border-color .12s ease, background-color .12s ease;
+}
+.ge-opt:hover { border-color: var(--ge-brand); background: var(--ge-surface-2); }
+.ge-opt.is-on { background: var(--ge-brand); color: var(--ge-brand-ink); border-color: var(--ge-brand); }
+
+.ge-hint { font-size: .9rem; color: var(--ge-subtle); margin: 1rem 0 0; }
+
+.ge-rows__head,
+.ge-row {
+  display: grid;
+  gap: .75rem;
+  align-items: center;
+  grid-template-columns: 1fr 1fr 1fr 5.5rem 2.2rem;
+}
+.ge-rows__head {
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ge-subtle);
+  margin-bottom: .75rem;
+}
+.ge-row { margin-bottom: .75rem; }
+.ge-row input {
+  font: inherit;
+  width: 100%;
+  padding: .62em .8em;
+  color: var(--ge-text);
+  background: var(--ge-surface);
+  border: 1px solid var(--ge-border-strong);
+  border-radius: var(--ge-r-md);
+}
+.ge-row input:focus { border-color: var(--ge-brand); }
+.ge-row__diff { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9rem; color: var(--ge-brand); font-weight: 600; text-align: right; }
+.ge-row__rm {
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  width: 2.2rem;
+  height: 2.2rem;
+  padding: 0;
+  background: transparent;
+  color: var(--ge-subtle);
+  border: 1px solid var(--ge-border);
+  border-radius: var(--ge-r-md);
+}
+.ge-row__rm:hover { color: #a12a20; border-color: #a12a20; }
+
+.ge-tool__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1rem; }
+
+.ge-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  font: inherit;
+  font-weight: 600;
+  font-size: .9rem;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  padding: .78em 1.35em;
+  border-radius: var(--ge-r-md);
+  border: 1px solid transparent;
+}
+.ge-btn--primary { background: var(--ge-brand); color: var(--ge-brand-ink); }
+.ge-btn--primary:hover { background: var(--ge-brand-hover); color: var(--ge-brand-ink); }
+.ge-btn--secondary { background: var(--ge-surface); color: var(--ge-text); border-color: var(--ge-border-strong); }
+.ge-btn--secondary:hover { border-color: var(--ge-brand); background: var(--ge-surface-2); }
+.ge-btn--ghost { background: transparent; color: var(--ge-brand); padding-inline: .4em; }
+
+.ge-result { display: block; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--ge-border); }
+.ge-result__label { font-size: .78rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--ge-brand); margin: 0 0 .5rem; }
+.ge-result h3 { margin-bottom: .75rem; }
+.ge-result__big { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 700; line-height: 1; margin: 0 0 1rem; color: var(--ge-text); }
+.ge-result__impact { font-size: 1rem; color: var(--ge-muted); line-height: 1.7; max-width: 68ch; }
+.ge-result__cols {
+  display: grid;
+  gap: 1.5rem;
+  margin-block: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+}
+.ge-result h4 { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ge-subtle); margin: 0 0 .75rem; }
+.ge-result ul { margin: 0; padding-left: 1.15em; }
+.ge-result li { font-size: .9rem; color: var(--ge-muted); line-height: 1.6; margin-bottom: .5rem; }
+.ge-result li::marker { color: var(--ge-brand); }
+.ge-result__steps { background: var(--ge-surface-2); border: 1px solid var(--ge-border); border-radius: var(--ge-r-md); padding: 1rem; }
+.ge-result__steps p { font-size: .9rem; color: var(--ge-muted); margin: 0 0 .5rem; }
+.ge-result__steps p:last-child { margin-bottom: 0; }
+.ge-result__note { font-size: .78rem; color: var(--ge-subtle); margin: .75rem 0 0; }
+
+/* --------------------------------------------------------------------------
+   FAQ and affiliate notice
+   -------------------------------------------------------------------------- */
+
+.ge-faq { margin-top: 2.5rem; }
+.ge-faq details {
+  border: 1px solid var(--ge-border);
+  border-radius: var(--ge-r-md);
+  background: var(--ge-surface);
+  margin-bottom: .75rem;
+}
+.ge-faq summary {
+  cursor: pointer;
+  padding: 1rem;
+  font-weight: 600;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+.ge-faq summary::-webkit-details-marker { display: none; }
+.ge-faq summary::after { content: '+'; font-size: 1.2em; color: var(--ge-brand); flex-shrink: 0; line-height: 1; }
+.ge-faq details[open] summary::after { content: '\2212'; }
+.ge-faq p { padding: 0 1rem 1rem; font-size: .9rem; color: var(--ge-muted); line-height: 1.7; margin: 0; }
+
+.ge-affiliate {
+  font-size: .78rem;
+  line-height: 1.65;
+  color: var(--ge-muted);
+  background: var(--ge-accent-soft);
+  border: 1px solid var(--ge-accent-border);
+  border-radius: var(--ge-r-md);
+  padding: .75rem 1rem;
+  margin-block: 1.5rem;
+}
+.ge-affiliate strong { color: var(--ge-text); }
+
+/* --------------------------------------------------------------------------
+   Small screens
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 44rem) {
+  .ge-rows__head { display: none; }
+  .ge-row {
+    grid-template-columns: 1fr 1fr;
+    gap: .5rem;
+    padding-bottom: .75rem;
+    border-bottom: 1px solid var(--ge-border);
+  }
+  .ge-row__diff { text-align: left; }
+  .ge-opts { grid-template-columns: 1fr; }
+}

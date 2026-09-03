@@ -1,0 +1,15 @@
+/*
+Theme Name:   Going Eagle
+Theme URI:    https://lawngreen-donkey-777239.hostingersite.com/
+Description:  Child theme for Kadence, built for Going Eagle. Adds the Going Eagle
+              design tokens, the editorial reviewer byline, article and FAQ schema,
+              and the free golf calculators as shortcodes.
+Author:       Going Eagle Editorial Team
+Template:     kadence
+Version:      0.1.0
+Text Domain:  going-eagle
+License:      GPL-2.0-or-later
+*/
+
+/* Styles live in assets/css/going-eagle.css, enqueued from functions.php after the
+   Kadence parent stylesheet. This file exists for the theme header only. */
