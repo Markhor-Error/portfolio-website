@@ -30,6 +30,7 @@ deliberately small. It adds only what Kadence cannot know about:
 | `[ge_byline]` | Byline block. Add `compact="true"` for the small variant. Auto-prepended to single posts unless the shortcode is present in the content. |
 | `[ge_ball_flight]` | Ball flight diagnostic. |
 | `[ge_handicap]` | Handicap index calculator. |
+| `[ge_sim_budget]` | Simulator space check and budget split. Publishes no prices — it splits the reader's own budget. |
 | `[ge_faq]…[/ge_faq]` | FAQ accordion that also emits `FAQPage` schema. |
 | `[ge_q question="…"]answer[/ge_q]` | One FAQ entry. Must sit inside `[ge_faq]`. |
 

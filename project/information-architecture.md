@@ -61,7 +61,6 @@ HOME  /
 │   ├── /gear/putters/
 │   ├── /gear/balls/
 │   ├── /gear/rangefinders/
-│   ├── /gear/launch-monitors/
 │   ├── /gear/training-aids/
 │   └── /gear/complete-sets/
 │
@@ -147,7 +146,7 @@ Everything on the site is within three clicks of the homepage.
 - **Intent owned:** informational, strategy — explicitly *not* swing mechanics. That
   boundary is what stops it cannibalizing `/fixes/`.
 - **Pillar:** *The Scoring Roadmap* — what changes at each milestone.
-- **Commercial destination:** `/gear/rangefinders/`, `/gear/launch-monitors/`, `/tools/scoring-benchmark/`.
+- **Commercial destination:** `/gear/rangefinders/`, `/home-golf/launch-monitors/`, `/tools/scoring-benchmark/`.
 - **Internal-link rule:** milestone pages link to each other in sequence (100 → 90 → 80) and up
   to the pillar. Each links out to the *one* fix cluster most relevant to that scoring band.
 
@@ -180,6 +179,21 @@ Everything on the site is within three clicks of the homepage.
 
 **Boundary vs Gear:** `/gear/` is what you carry to the course. `/home-golf/` is what you build
 in your garage. A hitting mat is Home Golf. A golf bag is Gear. No page belongs in both.
+
+**Resolved, 2026-09-03 — launch monitors.** An earlier draft of this tree listed
+`/gear/launch-monitors/` *and* `/home-golf/launch-monitors/`, which is the exact duplication the
+rule above forbids. Launch monitors are genuinely dual-use: a portable unit goes to the range, a
+camera unit lives in a garage. One page has to own the intent, and it is **`/home-golf/`**,
+because the buying decision is dominated by the room the unit has to work in — which is a Home
+Golf question, not a what-do-I-carry question. `/gear/` links across to it and does not duplicate
+it. Scoring's commercial destination has moved accordingly.
+
+**Resolved, 2026-09-03 — simulators vs simulator cost.** `/home-golf/simulators/` was planned as
+"what a complete setup costs at each budget tier", which is the intent `/home-golf/simulator-cost/`
+exists to own. Split: **`/home-golf/simulators/` owns the build** — room geometry, component order
+and the irreversible mistakes. **`/home-golf/simulator-cost/` owns the money** — cost structure,
+the costs outside package pricing, and the cost-per-round method. The calculation itself lives in
+`/tools/simulator-budget/`, which both pages link to.
 
 ### 5. Basics — `/basics/`
 - **Purpose:** top-of-funnel capture, entity/definitional coverage, and the AEO engine.

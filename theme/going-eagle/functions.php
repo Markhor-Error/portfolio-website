@@ -81,6 +81,16 @@ function going_eagle_assets(): void {
 			true
 		);
 	}
+
+	if ( has_shortcode( $post->post_content, 'ge_sim_budget' ) ) {
+		wp_enqueue_script(
+			'going-eagle-sim-budget',
+			GOING_EAGLE_URI . '/assets/js/sim-budget.js',
+			array(),
+			GOING_EAGLE_VERSION,
+			true
+		);
+	}
 }
 add_action( 'wp_enqueue_scripts', 'going_eagle_assets', 20 );
 

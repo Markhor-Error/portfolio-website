@@ -1,0 +1,530 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ReviewerBadge from '../../components/ReviewerBadge.astro';
+import { MODEL, BUILDS } from '../../data/simbudget';
+import { faqGraph } from '../../lib/schema';
+
+const title = 'Golf Simulator Space and Budget Planner';
+const description =
+  'Check whether your room can host a golf simulator, then split your budget across the ' +
+  'components in a defensible order — including the costs no package price includes.';
+
+const trail = [
+  { name: 'Home', href: '/' },
+  { name: 'Free Tools', href: '/tools/' },
+  { name: 'Simulator Budget Planner', href: '/tools/simulator-budget/' },
+];
+
+const faqs = [
+  {
+    q: 'How much ceiling height do I need for a golf simulator?',
+    a: 'It scales with your height rather than being a single figure, because the clearance ' +
+       'you need is set by how high the clubhead travels — which is above your hands, which ' +
+       'are already above your head. This planner estimates it from your standing height and ' +
+       'lets you enter a measured overhead reach instead. Treat the result as a planning ' +
+       'estimate: the definitive test is making ten full driver swings in the actual room, ' +
+       'measuring to the lowest obstruction rather than to the ceiling.',
+  },
+  {
+    q: 'Does this tool tell me what a golf simulator costs?',
+    a: 'No, and that is deliberate. We do not publish component prices we have not verified ' +
+       'ourselves, and this category moves fast enough that a copied figure is misleading ' +
+       'within a year. What the planner does instead is take the budget you already have and ' +
+       'split it across the components in a defensible order, so nothing gets left out of the ' +
+       'total. Price the components yourself against current listings.',
+  },
+  {
+    q: 'Why does the planner ask for my launch monitor space requirements?',
+    a: 'Because they vary by technology and by unit, and they are the requirement most often ' +
+       'broken in a home build. Radar units observe the ball in flight and need clear space in ' +
+       'front of it; camera units need a defined position beside or behind it. Rather than ' +
+       'guess on your behalf, the planner checks the numbers from your shortlisted unit’s own ' +
+       'spec sheet against your actual room.',
+  },
+  {
+    q: 'What is the room reserve in the budget split?',
+    a: 'The costs that never appear in a simulator package price: lighting consistent enough ' +
+       'for a camera-based unit, a power run to the hitting corner, flooring and a shock layer ' +
+       'under the mat, and side and overhead netting. On a mid-range build these routinely add ' +
+       'a third to the headline total, so the planner reserves for them up front rather than ' +
+       'letting them arrive as a surprise.',
+  },
+  {
+    q: 'Should I build a net setup or a screen setup?',
+    a: 'A net setup gives you every number a screen setup gives you, in less space and for far ' +
+       'less money. What the screen and projector add is the picture and simulated course play, ' +
+       'which is enjoyable and motivating but unrelated to whether your ball striking improves. ' +
+       'If the budget is under pressure, a net setup built properly beats a screen setup built ' +
+       'badly, and the visual layer can be retrofitted later to a room that was measured right.',
+  },
+];
+
+const schema = [
+  faqGraph(faqs, '/tools/simulator-budget/'),
+  {
+    '@type': 'WebApplication',
+    name: title,
+    applicationCategory: 'SportsApplication',
+    operatingSystem: 'Any',
+    description,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  },
+];
+
+const buildKeys = Object.keys(BUILDS);
+---
+<Base title={title} description={description} schema={schema} trail={trail}>
+  <div class="wrap-c page">
+    <Breadcrumbs trail={trail} />
+    <p class="eyebrow">Free tool</p>
+    <h1>Will your room take a simulator, and where should the money go?</h1>
+    <p class="lede">
+      Most home simulator builds go wrong in the same order: buy the launch monitor, then
+      discover the room cannot give it the space its technology needs. Measure first. Nothing you
+      type here leaves your browser.
+    </p>
+    <ReviewerBadge compact />
+
+    <div class="tool" id="tool">
+      <form id="sim-form" novalidate>
+        <fieldset class="grp">
+          <legend><span class="grp-n">1</span> <span>Your room</span></legend>
+          <div class="units" role="group" aria-label="Measurement units">
+            <label><input type="radio" name="unit" value="in" checked /> Inches</label>
+            <label><input type="radio" name="unit" value="cm" /> Centimetres</label>
+          </div>
+          <div class="fields">
+            <p class="f">
+              <label for="ceiling">Ceiling height <span>to the <strong>lowest</strong> obstruction</span></label>
+              <input type="number" id="ceiling" min="1" step="0.5" inputmode="decimal" placeholder="e.g. 108" />
+            </p>
+            <p class="f">
+              <label for="depth">Room depth <span>front wall to back wall</span></label>
+              <input type="number" id="depth" min="1" step="0.5" inputmode="decimal" placeholder="e.g. 180" />
+            </p>
+            <p class="f">
+              <label for="width">Room width <span>side wall to side wall</span></label>
+              <input type="number" id="width" min="1" step="0.5" inputmode="decimal" placeholder="e.g. 144" />
+            </p>
+            <p class="f">
+              <label for="height">Your height <span>standing, without shoes</span></label>
+              <input type="number" id="height" min="1" step="0.5" inputmode="decimal" placeholder="e.g. 70" />
+            </p>
+            <p class="f f-wide">
+              <label for="reach">Your overhead reach <span class="opt-tag">optional &mdash; fingertips, arms straight up</span></label>
+              <input type="number" id="reach" min="1" step="0.5" inputmode="decimal" placeholder="Measured — more accurate than the estimate" />
+            </p>
+          </div>
+        </fieldset>
+
+        <fieldset class="grp">
+          <legend><span class="grp-n">2</span> <span>Your launch monitor</span> <em class="opt-tag">optional</em></legend>
+          <p class="grp-note">
+            From the spec sheet of the unit you are considering. We check its stated requirement
+            against your room rather than guessing a figure on your behalf.
+          </p>
+          <div class="fields">
+            <p class="f">
+              <label for="lmFront">Space needed <strong>in front of</strong> the ball</label>
+              <input type="number" id="lmFront" min="0" step="0.5" inputmode="decimal" placeholder="Radar units need the most" />
+            </p>
+            <p class="f">
+              <label for="lmBehind">Space needed <strong>behind</strong> the ball</label>
+              <input type="number" id="lmBehind" min="0" step="0.5" inputmode="decimal" placeholder="Camera units are often positioned here" />
+            </p>
+          </div>
+        </fieldset>
+
+        <fieldset class="grp">
+          <legend><span class="grp-n">3</span> <span>Your build and budget</span></legend>
+          <div class="builds" role="group" aria-label="Build type">
+            {buildKeys.map((k, i) => (
+              <label class="build">
+                <input type="radio" name="build" value={k} checked={i === 0} />
+                <span><strong>{BUILDS[k].label}</strong><em>{BUILDS[k].summary}</em></span>
+              </label>
+            ))}
+          </div>
+          <div class="fields">
+            <p class="f">
+              <label for="budget">Total build budget</label>
+              <input type="number" id="budget" min="0" step="50" inputmode="numeric" placeholder="e.g. 5000" />
+            </p>
+            <p class="f f-narrow">
+              <label for="ccy">Currency</label>
+              <select id="ccy">
+                <option value="$" selected>$</option>
+                <option value="&pound;">&pound;</option>
+                <option value="&euro;">&euro;</option>
+              </select>
+            </p>
+          </div>
+        </fieldset>
+      </form>
+
+      <p class="hint" id="hint">
+        Enter your ceiling height and your own height to get a space verdict. Add a budget to see
+        the split.
+      </p>
+      <output id="result" class="result" hidden aria-live="polite"></output>
+    </div>
+
+    <section class="explain">
+      <h2>How the space check works</h2>
+      <p>
+        We show the model rather than quoting a single minimum, because a single minimum is wrong
+        for tall golfers and wasteful for short ones. The clearance you need is set by the highest
+        point the clubhead reaches, and at that moment the club is above your hands, which are
+        already above your head.
+      </p>
+      <div class="model">
+        <p class="model-row"><span>Overhead reach</span>
+          <span>your measured reach, or your height &times; {MODEL.reachFactor} as an estimate</span></p>
+        <p class="model-row"><span>+ Club above the hands</span>
+          <span>{MODEL.clubOverheadIn}&Prime; &mdash; roughly half a driver, because the club is
+          nowhere near vertical when it is highest</span></p>
+        <p class="model-row"><span>+ Planning margin</span>
+          <span>{MODEL.swingMarginIn}&Prime; &mdash; so the verdict is not decided by an inch</span></p>
+        <p class="model-row model-tot"><span>= Ceiling clearance needed</span><span></span></p>
+      </div>
+      <p>
+        Depth is checked as the space behind the ball for your stance, or for a camera unit,
+        whichever is larger, plus {MODEL.ballToNetMinIn}&Prime; from ball to net so the ball has
+        slowed and the rebound has room to lose energy &mdash; or your radar unit&rsquo;s stated
+        requirement, whichever is larger. Width is checked as {MODEL.sideClearanceIn}&Prime; either
+        side of the ball, which is a mishit margin rather than a swing margin.
+      </p>
+
+      <div class="callout callout-warn">
+        <p class="callout-title">This is a planning estimate, not a verdict</p>
+        <p>
+          The definitive test costs nothing: take a driver into the room and make ten full,
+          committed swings including the follow-through, which is where most ceiling strikes
+          happen. And measure to the lowest thing in the swing arc, not to the ceiling &mdash;
+          light fittings, joists, ducting and, in a garage, the door track and the opener motor
+          all sit below it and all are the real limit.
+        </p>
+      </div>
+
+      <h2>Why there are no prices here</h2>
+      <p>
+        The planner splits the budget <em>you</em> already have. It does not tell you what a
+        launch monitor costs, because we do not publish figures we have not verified ourselves and
+        this category moves fast enough that a copied number is actively misleading within a year.
+        You can watch that happening on competing guides that still carry a year in the title.
+      </p>
+      <p>
+        The percentages are our recommended allocation, and they are chosen so that the components
+        which change your golf are funded before the components that change how it looks. The full
+        reasoning is in the <a href="/home-golf/simulator-cost/">cost guide</a>.
+      </p>
+    </section>
+
+    <section class="faqs">
+      <h2>Common questions</h2>
+      {faqs.map((f) => (
+        <details><summary>{f.q}</summary><p set:html={f.a} /></details>
+      ))}
+    </section>
+  </div>
+
+  <script define:vars={{ MODEL, BUILDS }}>
+    const $ = (s) => document.querySelector(s);
+    const IN_PER_CM = 1 / 2.54;
+
+    const num = (id) => {
+      const v = parseFloat($('#' + id).value);
+      return Number.isFinite(v) && v > 0 ? v : null;
+    };
+    const unit = () => document.querySelector('input[name="unit"]:checked').value;
+    /** Everything is reasoned about in inches; the UI converts on the way in and out. */
+    const toIn = (v) => (v === null ? null : unit() === 'cm' ? v * IN_PER_CM : v);
+    const fromIn = (v) => (unit() === 'cm' ? v / IN_PER_CM : v);
+
+    const fmtLen = (inches) => {
+      const v = fromIn(inches);
+      if (unit() === 'cm') return `${Math.round(v)} cm`;
+      const ft = Math.floor(v / 12);
+      const rem = Math.round(v - ft * 12);
+      return rem ? `${ft}′${rem}″` : `${ft}′`;
+    };
+
+    const money = (n, sym) => sym + n.toLocaleString(undefined, { maximumFractionDigits: 0 });
+
+    /** clear = it fits; tight = inside the planning margin; short = it does not. */
+    function verdict(have, need) {
+      if (have >= need) return 'clear';
+      if (have >= need - MODEL.swingMarginIn) return 'tight';
+      return 'short';
+    }
+
+    const VERDICT_LABEL = { clear: 'Fits', tight: 'Tight', short: 'Not enough' };
+
+    function row(name, state, detail) {
+      return `<div class="vrow is-${state}">
+        <span class="vchip">${VERDICT_LABEL[state]}</span>
+        <span class="vname">${name}</span>
+        <span class="vdetail">${detail}</span>
+      </div>`;
+    }
+
+    function allocate(build, budget) {
+      const rows = build.components.map((c) => ({
+        ...c,
+        amount: Math.round((budget * c.pct) / 100),
+      }));
+      // Independent rounding drifts from the total; absorb it on the last row.
+      const drift = budget - rows.reduce((n, r) => n + r.amount, 0);
+      if (rows.length) rows[rows.length - 1].amount += drift;
+      return rows;
+    }
+
+    function render() {
+      const box = $('#result');
+      const hint = $('#hint');
+
+      const ceiling = toIn(num('ceiling'));
+      const depth = toIn(num('depth'));
+      const width = toIn(num('width'));
+      const height = toIn(num('height'));
+      const reachIn = toIn(num('reach'));
+      const lmFront = toIn(num('lmFront'));
+      const lmBehind = toIn(num('lmBehind'));
+      const budget = num('budget');
+      const buildId = document.querySelector('input[name="build"]:checked').value;
+      const build = BUILDS[buildId];
+      const sym = $('#ccy').value;
+
+      const canSpace = ceiling !== null && (height !== null || reachIn !== null);
+      if (!canSpace && budget === null) {
+        box.hidden = true;
+        hint.hidden = false;
+        return;
+      }
+
+      let html = '';
+      const warnings = [];
+
+      if (canSpace) {
+        const reach = reachIn !== null ? reachIn : height * MODEL.reachFactor;
+        const needCeiling = reach + MODEL.clubOverheadIn + MODEL.swingMarginIn;
+        const cState = verdict(ceiling, needCeiling);
+
+        html += `<h3>Your room</h3><div class="vrows">`;
+        html += row(
+          'Ceiling clearance',
+          cState,
+          `You need about <strong>${fmtLen(needCeiling)}</strong>; you have ${fmtLen(ceiling)}.` +
+            (reachIn === null
+              ? ` Based on an estimated overhead reach of ${fmtLen(reach)} — measure yours for a better answer.`
+              : ` Based on your measured reach of ${fmtLen(reach)}.`),
+        );
+
+        if (depth !== null) {
+          const behind = Math.max(MODEL.shoulderToBallIn, lmBehind ?? 0);
+          const front = Math.max(MODEL.ballToNetMinIn, lmFront ?? 0);
+          const needDepth = behind + front;
+          html += row(
+            'Room depth',
+            verdict(depth, needDepth),
+            `You need about <strong>${fmtLen(needDepth)}</strong>; you have ${fmtLen(depth)}. ` +
+              `That is ${fmtLen(behind)} behind the ball and ${fmtLen(front)} in front of it.`,
+          );
+        }
+
+        if (width !== null) {
+          const needWidth = MODEL.sideClearanceIn * 2;
+          html += row(
+            'Room width',
+            verdict(width, needWidth),
+            `You need about <strong>${fmtLen(needWidth)}</strong>; you have ${fmtLen(width)}. ` +
+              `This is a mishit margin, not a swing margin — a shank leaves at a severe angle and at speed.`,
+          );
+        }
+        html += `</div>`;
+
+        if (cState === 'short') {
+          warnings.push(
+            'Ceiling height is the one dimension nothing else fixes. Before ruling the room out, ' +
+              'check whether a different spot in it is clear of the lowest obstruction, and confirm by ' +
+              'swinging a driver rather than by the tape measure alone.',
+          );
+        } else if (cState === 'tight') {
+          warnings.push(
+            'Your ceiling is inside the planning margin. Measure to the lowest obstruction — light ' +
+              'fittings, joists, ducting, and in a garage the door track and the opener motor — then ' +
+              'make ten full driver swings in the space before you buy anything.',
+          );
+        }
+        if (depth !== null && lmFront === null && lmBehind === null) {
+          warnings.push(
+            'Depth was checked against a general minimum. Enter your shortlisted launch monitor’s ' +
+              'stated space requirement in step 2 for a check that means something — this is the ' +
+              'requirement most often broken in a home build.',
+          );
+        }
+        if (buildId === 'screen' && cState !== 'clear') {
+          warnings.push(
+            'A tight room usually forces a short-throw or ultra-short-throw projector, which costs ' +
+              'more than a standard projector of the same brightness. Budget for that before you ' +
+              'commit to a screen build.',
+          );
+        }
+      }
+
+      if (budget !== null) {
+        const rows = allocate(build, budget);
+        html += `<h3>Splitting ${money(budget, sym)} across a ${build.label.toLowerCase()}</h3>`;
+        html += `<div class="alloc">`;
+        for (const r of rows) {
+          const name = r.href ? `<a href="${r.href}">${r.name}</a>` : r.name;
+          html += `<div class="arow">
+            <div class="ahead"><span class="aname">${name}</span>
+              <span class="aamt">${money(r.amount, sym)}<em>${r.pct}%</em></span></div>
+            <div class="abar"><i style="width:${r.pct}%"></i></div>
+            <p class="awhy">${r.why}</p>
+          </div>`;
+        }
+        html += `</div>`;
+        html += `<p class="disclaim"><strong>This is a split of your budget, not a price list.</strong>
+          We do not publish component prices we have not verified, because this category moves fast
+          enough that a copied figure misleads within a year. Price the components yourself against
+          current listings, using this as the checklist so nothing is left out of the total.</p>`;
+      }
+
+      if (warnings.length) {
+        html += `<h3>Before you buy anything</h3><ul class="warns">${warnings
+          .map((w) => `<li>${w}</li>`)
+          .join('')}</ul>`;
+      }
+
+      box.innerHTML = html;
+      box.hidden = false;
+      hint.hidden = true;
+    }
+
+    $('#sim-form').addEventListener('input', render);
+    $('#sim-form').addEventListener('change', render);
+  </script>
+</Base>
+
+<style>
+  .page { padding-block: var(--s-6) var(--s-8); }
+  h1 { max-width: 24ch; }
+  .lede { font-size: var(--fs-lg); color: var(--text-muted); max-width: 60ch; }
+
+  .tool { background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r-xl); padding: clamp(1.25rem, 3vw, 2rem);
+    margin-block: var(--s-6) var(--s-8); box-shadow: var(--shadow-sm); }
+
+  .grp { border: 0; margin: 0 0 var(--s-6); padding: 0; }
+  .grp:last-of-type { margin-bottom: 0; }
+  .grp legend { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap;
+    font-family: var(--font-display); font-size: var(--fs-lg); margin-bottom: var(--s-3);
+    padding: 0; }
+  .grp-n { display: inline-grid; place-items: center; width: 1.6em; height: 1.6em;
+    border-radius: 50%; background: var(--brand); color: #fff;
+    font-family: var(--font-body); font-size: var(--fs-sm); font-weight: 700; }
+  .grp-note { font-size: var(--fs-sm); color: var(--text-muted); max-width: 62ch;
+    margin: 0 0 var(--s-3); }
+  .opt-tag { font-style: normal; font-size: var(--fs-xs); font-weight: 600;
+    color: var(--text-subtle); background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: var(--r-pill); padding: .15em .6em; white-space: nowrap; }
+
+  .units { display: flex; gap: var(--s-4); margin-bottom: var(--s-4); }
+  .units label { display: inline-flex; align-items: center; gap: var(--s-2); margin: 0;
+    font-size: var(--fs-sm); font-weight: 500; cursor: pointer; }
+  .units input { width: auto; margin: 0; accent-color: var(--brand); }
+
+  .fields { display: grid; gap: var(--s-3);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
+  .f { margin: 0; display: flex; flex-direction: column; gap: .35rem; }
+  .f-wide { grid-column: 1 / -1; }
+  .f-narrow { max-width: 8rem; }
+  .f label { font-size: var(--fs-sm); font-weight: 600; line-height: 1.35; }
+  .f label span { display: block; font-weight: 400; font-size: var(--fs-xs);
+    color: var(--text-subtle); }
+  .f label .opt-tag { display: inline-block; margin-top: .2em; }
+  .f input, .f select { width: 100%; padding: .55rem .7rem; font: inherit;
+    font-size: var(--fs-sm); color: var(--text); background: var(--bg);
+    border: 1px solid var(--border-strong); border-radius: var(--r-md); }
+  .f input:focus-visible, .f select:focus-visible { outline: 2px solid var(--brand);
+    outline-offset: 1px; }
+
+  .builds { display: grid; gap: var(--s-3); margin-bottom: var(--s-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
+  .build { display: flex; gap: var(--s-3); align-items: flex-start; margin: 0; cursor: pointer;
+    padding: var(--s-3) var(--s-4); border: 1px solid var(--border);
+    border-radius: var(--r-md); background: var(--bg);
+    transition: border-color .15s ease; }
+  .build:has(input:checked) { border-color: var(--brand); background: var(--brand-soft); }
+  .build input { width: auto; margin: .25rem 0 0; accent-color: var(--brand); flex: none; }
+  .build strong { display: block; font-size: var(--fs-sm); }
+  .build em { display: block; font-style: normal; font-size: var(--fs-xs);
+    color: var(--text-muted); line-height: 1.5; margin-top: .2em; }
+
+  .hint { margin: var(--s-5) 0 0; font-size: var(--fs-sm); color: var(--text-subtle); }
+
+  .result { display: block; margin-top: var(--s-6); padding-top: var(--s-5);
+    border-top: 1px solid var(--border); }
+  .result :global(h3) { font-size: var(--fs-lg); margin: var(--s-5) 0 var(--s-3); }
+  .result :global(h3:first-child) { margin-top: 0; }
+
+  .result :global(.vrows) { display: grid; gap: var(--s-2); }
+  .result :global(.vrow) { display: grid; gap: .15rem var(--s-3); align-items: baseline;
+    grid-template-columns: auto 1fr; padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--border); border-left-width: 3px; border-radius: var(--r-md);
+    background: var(--bg); }
+  .result :global(.vchip) { font-size: var(--fs-xs); font-weight: 700; letter-spacing: .05em;
+    text-transform: uppercase; white-space: nowrap; }
+  .result :global(.vname) { font-weight: 600; font-size: var(--fs-sm); }
+  .result :global(.vdetail) { grid-column: 1 / -1; font-size: var(--fs-sm);
+    color: var(--text-muted); line-height: 1.6; }
+  .result :global(.is-clear) { border-left-color: var(--brand); }
+  .result :global(.is-clear .vchip) { color: var(--brand); }
+  .result :global(.is-tight) { border-left-color: var(--warn); background: var(--warn-soft); }
+  .result :global(.is-tight .vchip) { color: var(--warn); }
+  .result :global(.is-short) { border-left-color: var(--accent); background: var(--accent-soft); }
+  .result :global(.is-short .vchip) { color: var(--accent); }
+
+  .result :global(.alloc) { display: grid; gap: var(--s-4); }
+  .result :global(.arow) { display: grid; gap: .4rem; }
+  .result :global(.ahead) { display: flex; justify-content: space-between; gap: var(--s-3);
+    align-items: baseline; flex-wrap: wrap; }
+  .result :global(.aname) { font-weight: 600; font-size: var(--fs-sm); }
+  .result :global(.aamt) { font-family: var(--font-display); font-size: var(--fs-md);
+    white-space: nowrap; }
+  .result :global(.aamt em) { font-style: normal; font-family: var(--font-body);
+    font-size: var(--fs-xs); color: var(--text-subtle); margin-left: .5em; }
+  .result :global(.abar) { height: 6px; border-radius: var(--r-pill);
+    background: var(--surface-2); overflow: hidden; }
+  .result :global(.abar i) { display: block; height: 100%; background: var(--brand);
+    border-radius: var(--r-pill); }
+  .result :global(.awhy) { margin: 0; font-size: var(--fs-sm); color: var(--text-muted);
+    line-height: 1.6; max-width: 68ch; }
+
+  .result :global(.disclaim) { margin: var(--s-5) 0 0; padding: var(--s-4);
+    font-size: var(--fs-sm); line-height: 1.6; color: var(--text-muted);
+    background: var(--surface-2); border-radius: var(--r-md); max-width: 68ch; }
+  .result :global(.warns) { margin: 0; padding-left: 1.2em; max-width: 68ch; }
+  .result :global(.warns li) { margin-bottom: var(--s-2); font-size: var(--fs-sm);
+    line-height: 1.6; color: var(--text-muted); }
+  .result :global(.warns li::marker) { color: var(--accent); }
+
+  .explain { max-width: var(--w-prose); }
+  .explain h2 { margin-top: var(--s-7); font-size: var(--fs-xl); }
+  .model { margin: var(--s-5) 0; border: 1px solid var(--border); border-radius: var(--r-md);
+    background: var(--surface); overflow: hidden; }
+  .model-row { display: grid; gap: .15rem var(--s-4); margin: 0;
+    grid-template-columns: minmax(0, 14rem) 1fr; padding: var(--s-3) var(--s-4);
+    border-bottom: 1px solid var(--border); font-size: var(--fs-sm); }
+  .model-row:last-child { border-bottom: 0; }
+  .model-row span:first-child { font-weight: 600; }
+  .model-row span:last-child { color: var(--text-muted); line-height: 1.55; }
+  .model-tot { background: var(--brand-soft); }
+  @media (max-width: 34rem) { .model-row { grid-template-columns: 1fr; } }
+
+  .faqs { max-width: var(--w-prose); }
+  .faqs h2 { margin-top: var(--s-7); font-size: var(--fs-xl); }
+</style>

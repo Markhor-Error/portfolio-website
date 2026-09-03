@@ -57,7 +57,7 @@ const dateLabel = (d: string) =>
         Published <time datetime={published}>{dateLabel(published)}</time>
         {updated && <> · Updated <time datetime={updated}>{dateLabel(updated)}</time></>}
       </p>
-      <ReviewerBadge updated={updated} />
+      <ReviewerBadge updated={updated} reviewed={reviewed} />
     </header>
 
     {answer && (

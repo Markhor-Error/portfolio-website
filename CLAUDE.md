@@ -4,7 +4,8 @@ Read this first. It carries the decisions, constraints and current state so a ne
 session does not re-derive or re-research anything already settled.
 
 **Owner:** Hashir · **Brand:** Going Eagle · **Niche:** golf improvement + equipment
-**Branch:** `claude/going-eagle-website-dev-gzkqxs` — develop, commit and push here.
+**Branch:** whichever branch the session assigns. Past work: `claude/going-eagle-website-dev-gzkqxs`,
+then `claude/home-golf-cluster-k9ju8o` (Home Golf cluster). Follow the session's branch, not this line.
 **Framework:** the `website-intelligence-engine` skill. Invoke it when doing strategy,
 content planning or QA work. It is the agreed operating method for this project.
 
@@ -130,9 +131,15 @@ Full site tree and internal-link rules: `project/information-architecture.md`.
   Mike's reviewer profile, privacy, terms
 - Seven cluster pillars with original prose
 - `/fixes/slice/` — flagship article, consolidating what Going Low splits across 4 URLs
-- Two working tools: ball flight diagnostic (9 flights + strike faults, D-plane based,
-  mirrors for left-handers) and a WHS handicap calculator
-- Kadence child theme with byline, schema and both tools as shortcodes
+- **Home Golf commercial core: 5 articles** — `/home-golf/simulators/` (build: room geometry
+  and build order), `/launch-monitors/` (measured vs modelled, as a method not a product list),
+  `/simulator-cost/` (cost structure and cost-per-round; no price figures), `/hitting-mats/`,
+  `/hitting-nets/`
+- Three working tools: ball flight diagnostic (9 flights + strike faults, D-plane based,
+  mirrors for left-handers), a WHS handicap calculator, and the simulator space and budget
+  planner (`/tools/simulator-budget/` — room geometry check plus a split of the reader's own
+  budget; the differentiator neither competitor has)
+- Kadence child theme with byline, schema and all three tools as shortcodes
 - CI: builds, link-checks, pushes `dist/` to a `deploy` branch
 
 **Open decisions**
@@ -142,10 +149,14 @@ Full site tree and internal-link rules: `project/information-architecture.md`.
 - Whether to keep the Astro site as a preview tool long-term.
 
 **Next up**
-1. Home Golf cluster content — highest revenue per conversion, competitor gap
+1. Remaining Home Golf children: impact screens, enclosures, putting greens, practice-at-home
 2. Remaining `/fixes/` children (hook, shank, fat, thin, push/pull)
-3. Remaining tools: scoring benchmark, wedge gapping, simulator budget, club distances
+3. Remaining tools: scoring benchmark, wedge gapping, club distances
 4. Glossary as the entity hub for AI search
+5. Candidate page — "golf simulator room dimensions" is a real standalone intent that Golfer
+   Logic ranks a dedicated page for. Currently served as an H2 on `/home-golf/simulators/`
+   plus the planner tool. Split it out only if the pillar section proves too cramped; do not
+   create it as a near-duplicate.
 
 **Not started:** opportunity scoring CSV, cannibalization log, freshness register.
 
@@ -161,6 +172,7 @@ Callaway, TaylorMade, Global Golf, Austad's, Bushnell, Arccos.
 
 - Network access is governed by the cloud environment's policy (environment: "Hashir").
   Domain changes require a **new session** — a running session keeps its old policy.
-- GitHub push works. Both competitor domains and the staging domain were blocked as of
-  the last session; the owner has since switched the environment to Custom. **Verify
-  with a real fetch before assuming either way.**
+- GitHub push works. **Verified 2026-09-03: `golferlogic.com`, `goinglow.com` and the staging
+  domain all respond.** Competitor structure can now be checked directly rather than
+  reconstructed. Still verify with a real fetch at the start of a session — a policy change
+  needs a new session to take effect.

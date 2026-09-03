@@ -336,3 +336,84 @@
   .ge-row__diff { text-align: left; }
   .ge-opts { grid-template-columns: 1fr; }
 }
+
+/* ---------------------------------------------------------------------------
+   Simulator space and budget planner  [ge_sim_budget]
+   Mirrors /tools/simulator-budget/ on the Astro preview site.
+   --------------------------------------------------------------------------- */
+
+.ge-grp { border: 0; margin: 0 0 1.75rem; padding: 0; }
+.ge-grp:last-of-type { margin-bottom: 0; }
+.ge-grp legend {
+	display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
+	font-size: 1.05rem; font-weight: 600; margin-bottom: .75rem; padding: 0;
+}
+.ge-grp__note {
+	font-size: .9rem; color: var(--ge-muted); max-width: 62ch; margin: 0 0 .85rem;
+	line-height: 1.6;
+}
+
+.ge-units { display: flex; gap: 1rem; margin-bottom: 1rem; }
+.ge-units label { display: inline-flex; align-items: center; gap: .5rem; margin: 0; font-size: .9rem; cursor: pointer; }
+.ge-units input { width: auto; margin: 0; accent-color: var(--ge-brand); }
+
+.ge-fields { display: grid; gap: .85rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
+.ge-f { margin: 0; display: flex; flex-direction: column; gap: .35rem; }
+.ge-f--wide { grid-column: 1 / -1; }
+.ge-f--narrow { max-width: 8rem; }
+.ge-f label { font-size: .9rem; font-weight: 600; line-height: 1.35; }
+.ge-f label span { display: block; font-weight: 400; font-size: .78rem; color: var(--ge-subtle); }
+.ge-f input, .ge-f select {
+	width: 100%; padding: .55rem .7rem; font: inherit; font-size: .9rem;
+	color: var(--ge-text); background: var(--ge-surface-2);
+	border: 1px solid var(--ge-border-strong); border-radius: .4rem;
+}
+.ge-f input:focus, .ge-f select:focus { border-color: var(--ge-brand); outline: none; }
+
+.ge-builds { display: grid; gap: .75rem; margin-bottom: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
+.ge-build {
+	display: flex; gap: .75rem; align-items: flex-start; margin: 0; cursor: pointer;
+	padding: .75rem 1rem; border: 1px solid var(--ge-border); border-radius: .5rem;
+	background: var(--ge-surface-2);
+}
+.ge-build:has(input:checked) { border-color: var(--ge-brand); background: var(--ge-brand-soft); }
+.ge-build input { width: auto; margin: .25rem 0 0; accent-color: var(--ge-brand); flex: none; }
+.ge-build strong { display: block; font-size: .9rem; }
+.ge-build em { display: block; font-style: normal; font-size: .78rem; color: var(--ge-muted); line-height: 1.5; margin-top: .2em; }
+
+.ge-result { display: block; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--ge-border); }
+.ge-result h3 { font-size: 1.05rem; margin: 1.25rem 0 .75rem; }
+.ge-result h3:first-child { margin-top: 0; }
+
+.ge-vrows { display: grid; gap: .5rem; }
+.ge-vrow {
+	display: grid; gap: .15rem .75rem; align-items: baseline; grid-template-columns: auto 1fr;
+	padding: .75rem 1rem; border: 1px solid var(--ge-border); border-left-width: 3px;
+	border-radius: .4rem; background: var(--ge-surface-2);
+}
+.ge-vchip { font-size: .72rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
+.ge-vname { font-weight: 600; font-size: .9rem; }
+.ge-vdetail { grid-column: 1 / -1; font-size: .9rem; color: var(--ge-muted); line-height: 1.6; }
+.ge-vrow.is-clear { border-left-color: var(--ge-brand); }
+.ge-vrow.is-clear .ge-vchip { color: var(--ge-brand); }
+.ge-vrow.is-tight { border-left-color: var(--ge-accent); background: var(--ge-accent-soft); }
+.ge-vrow.is-tight .ge-vchip { color: var(--ge-accent); }
+.ge-vrow.is-short { border-left-color: #a12a20; background: var(--ge-surface-2); }
+.ge-vrow.is-short .ge-vchip { color: #a12a20; }
+
+.ge-alloc { display: grid; gap: 1.15rem; }
+.ge-arow { display: grid; gap: .4rem; }
+.ge-ahead { display: flex; justify-content: space-between; gap: .75rem; align-items: baseline; flex-wrap: wrap; }
+.ge-aname { font-weight: 600; font-size: .9rem; }
+.ge-aamt { font-size: 1rem; font-weight: 600; white-space: nowrap; }
+.ge-aamt em { font-style: normal; font-size: .78rem; font-weight: 400; color: var(--ge-subtle); margin-left: .5em; }
+.ge-abar { height: 6px; border-radius: 999px; background: var(--ge-surface-2); overflow: hidden; }
+.ge-abar i { display: block; height: 100%; background: var(--ge-brand); border-radius: 999px; }
+.ge-awhy { margin: 0; font-size: .9rem; color: var(--ge-muted); line-height: 1.6; max-width: 68ch; }
+
+.ge-disclaim {
+	margin: 1.25rem 0 0; padding: 1rem; font-size: .9rem; line-height: 1.6;
+	color: var(--ge-muted); background: var(--ge-surface-2); border-radius: .4rem; max-width: 68ch;
+}
+.ge-warns { margin: 0; padding-left: 1.2em; max-width: 68ch; }
+.ge-warns li { margin-bottom: .5rem; font-size: .9rem; line-height: 1.6; color: var(--ge-muted); }
