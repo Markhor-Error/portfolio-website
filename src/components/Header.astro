@@ -107,6 +107,8 @@ const isActive = (href: string) => href === '/' ? path === '/' : path.startsWith
     position: absolute; top: calc(100% + 2px); left: 50%;
     transform: translateX(-50%) translateY(-6px);
     min-width: 21rem;
+    /* Never wider than the viewport allows, whatever min-width asks for. */
+    max-width: calc(100vw - 2 * var(--gutter));
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--r-lg);
@@ -118,6 +120,17 @@ const isActive = (href: string) => href === '/' ? path === '/' : path.startsWith
   .nav-item:hover .panel, .nav-item:focus-within .panel {
     opacity: 1; visibility: visible; pointer-events: auto;
     transform: translateX(-50%) translateY(0);
+  }
+
+  /* The last trigger sits close enough to the right edge that a centred panel
+     hangs off the viewport and scrolls the whole page sideways. Anchor that one
+     to its own right edge instead. */
+  .nav-item:last-child .panel {
+    left: auto; right: 0; transform: translateX(0) translateY(-6px);
+  }
+  .nav-item:last-child:hover .panel,
+  .nav-item:last-child:focus-within .panel {
+    transform: translateX(0) translateY(0);
   }
   .panel-list {
     list-style: none; margin: 0; padding: 0;

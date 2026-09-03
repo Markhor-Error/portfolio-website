@@ -84,6 +84,47 @@ export const clusterById = (id: ClusterId): Cluster =>
   CLUSTERS.find((c) => c.id === id)!;
 
 /**
+ * The tool each cluster sends readers to from the article sidebar.
+ *
+ * Only built tools appear here — the same rule as NAV's `ready` gate, for the same
+ * reason. Add an entry in the commit that ships the tool, not before.
+ */
+export interface ClusterTool { name: string; href: string; pitch: string }
+
+export const CLUSTER_TOOL: Partial<Record<ClusterId, ClusterTool>> = {
+  fixes: {
+    name: 'Ball Flight Diagnostic',
+    href: '/tools/ball-flight-diagnostic/',
+    pitch: 'Describe the shot you keep hitting and work backwards to the impact conditions causing it.',
+  },
+  'short-game': {
+    name: 'Ball Flight Diagnostic',
+    href: '/tools/ball-flight-diagnostic/',
+    pitch: 'Strike faults show up around the green first. Find which one is yours.',
+  },
+  scoring: {
+    name: 'Handicap Calculator',
+    href: '/tools/handicap-calculator/',
+    pitch: 'Work out an index from your recent scores, with every step of the calculation shown.',
+  },
+  gear: {
+    name: 'Ball Flight Diagnostic',
+    href: '/tools/ball-flight-diagnostic/',
+    pitch: 'Before you buy anything, find out whether the fault is the club or the swing.',
+  },
+  'home-golf': {
+    name: 'Simulator Space and Budget Planner',
+    href: '/tools/simulator-budget/',
+    pitch: 'Check whether your room can host a simulator, then split your budget across the components.',
+  },
+  basics: {
+    name: 'Handicap Calculator',
+    href: '/tools/handicap-calculator/',
+    pitch: 'See how an index is actually produced, one differential at a time.',
+  },
+};
+
+/**
  * Mega-menu panels. Four triggers keeps the bar usable while every pillar keeps a
  * sitewide link.
  *
