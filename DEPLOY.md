@@ -1,46 +1,76 @@
-# Deploying Going Eagle to Hostinger
+# Deploying Going Eagle
 
-The site is a static build. Nothing needs PHP, a database, or WordPress.
+> **STOP — read this first.**
+> The staging site `lawngreen-donkey-777239.hostingersite.com` runs **WordPress with
+> Kadence Pro**. Copying a static build into `public_html` would overwrite that
+> installation and destroy the paid theme setup. **Do not do it.**
+>
+> The deployment target below is a WordPress **child theme**, not the web root.
 
-## What gets deployed
+## Current state of this repository
 
-`npm run build` produces `dist/`. The contents of `dist/` are the website — that is what
-goes into `public_html`.
+This repo currently contains two things:
+
+1. **`project/`** — the strategy deliverables (competitor intelligence, information
+   architecture, affiliate research). Reference material, not deployed.
+2. **An Astro static site** — built while the WordPress stack was unknown. Its design
+   tokens, page copy, schema logic and interactive tools are being ported to the Kadence
+   child theme; the Markdown content in `src/content/` is the source of truth for articles
+   either way.
+
+The Astro build is **not** the deployment artifact for a WordPress host. It is kept as the
+reference implementation and as a way to preview pages quickly.
+
+## Deployment target: `theme/going-eagle/`
+
+The WordPress child theme is the thing that gets deployed. It goes to:
+
+```
+public_html/wp-content/themes/going-eagle/
+```
+
+Nothing outside `wp-content/themes/going-eagle/` is touched by a deploy. WordPress core,
+plugins, uploads and the database are all left alone.
 
 ## Option A — Hostinger Git deploy (recommended)
 
-Hostinger can pull directly from this repository, but it deploys the **repository**, not a
-build output, so the built files must be committed for this to work end to end. Two ways:
+In hPanel: **Advanced → Git**
 
-1. **Build locally, commit `dist/`.** Remove `dist/` from `.gitignore`, run `npm run build`,
-   commit, and point Hostinger's Git deploy at the branch with `dist` as the directory.
-2. **Build in CI.** A GitHub Action runs `npm ci && npm run build` and pushes `dist/` to a
-   `deploy` branch. Hostinger's Git deploy tracks `deploy`. This keeps the main branch clean
-   and is the better long-term setup.
+- Repository: this repo
+- Branch: `claude/going-eagle-website-dev-gzkqxs`
+- **Install path: `public_html/wp-content/themes/going-eagle`**
 
-In hPanel: **Advanced → Git**, add the repository, choose the branch, set the install path to
-`public_html`, then use **Deploy** (or set up the auto-deploy webhook).
+Getting the install path right is the whole safety story. Pointed at `public_html`, a deploy
+would clobber the WordPress install.
 
 ## Option B — Manual upload
 
-```bash
-npm ci
-npm run build
-```
+Zip `theme/going-eagle/` and install it through **WP Admin → Appearance → Themes → Add New →
+Upload Theme**. WordPress puts it in the right place and will not overwrite anything else.
 
-Then upload everything inside `dist/` to `public_html` via hPanel's File Manager or SFTP.
-Include the dotfile `.htaccess` — file managers hide it by default.
+## Content
 
-## After the first deploy, check
+Articles live as Markdown in `src/content/articles/`, with front matter carrying the SEO
+metadata, decay class, review date, page purpose and original-value notes. They reach
+WordPress by one of:
 
-- `https://<domain>/` loads and the theme toggle works
-- `https://<domain>/robots.txt` and `/sitemap-index.xml` resolve
-- A nested route such as `/tools/handicap-calculator/` loads directly, not only via a link
-- `/404.html` is served for a nonexistent path
-- Submit the sitemap in Google Search Console
+- **WP REST API** — direct push using an application password. Needs the staging domain
+  allowlisted in the Claude Code environment's network policy first.
+- **WXR import file** — generated from the same Markdown and imported through
+  **Tools → Import**. Works with no network access at all.
+
+Either way the Markdown stays the source of truth, so content is never trapped in the CMS.
 
 ## Before going live on the real domain
 
-`SITE.url` in `src/consts.ts` is currently the staging URL. It drives canonicals, the sitemap,
-Open Graph URLs and JSON-LD `@id` values, so **change it before launching on the production
-domain** and rebuild. Leaving it wrong will point every canonical at staging.
+`SITE.url` in `src/consts.ts` and the corresponding constant in the theme point at the
+staging URL. They drive canonicals, sitemap entries and JSON-LD `@id` values, so **update
+them before launching on the production domain**.
+
+## Post-deploy checklist
+
+- Kadence Pro is still active and its licence still registered
+- The child theme is active and its parent (Kadence) resolves
+- Existing pages and media still load
+- `/robots.txt` and the sitemap resolve
+- A nested route loads directly, not only by following a link
