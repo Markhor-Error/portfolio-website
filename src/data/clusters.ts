@@ -14,7 +14,7 @@ export const CHILDREN: Record<string, ChildPage[]> = {
   fixes: [
     { title: 'How to fix a slice', href: '/fixes/slice/', ready: true,
       blurb: 'The most common miss in golf, and why aiming further left makes it worse.' },
-    { title: 'How to fix a hook', href: '/fixes/hook/',
+    { title: 'How to fix a hook', href: '/fixes/hook/', ready: true,
       blurb: 'The good player\'s miss. Face closing faster than the path can support.' },
     { title: 'Curing the shanks', href: '/fixes/shank/',
       blurb: 'What hosel contact actually tells you, and the fastest drill to stop it.' },
@@ -30,7 +30,7 @@ export const CHILDREN: Record<string, ChildPage[]> = {
       blurb: 'Where your distance is going, and why hitting harder makes it worse.' },
   ],
   'short-game': [
-    { title: 'Chipping fundamentals', href: '/short-game/chipping/',
+    { title: 'Chipping fundamentals', href: '/short-game/chipping/', ready: true,
       blurb: 'One reliable technique beats six situational ones you cannot repeat.' },
     { title: 'Pitching and partial wedges', href: '/short-game/pitching/',
       blurb: 'The 30 to 70 yard shot most amateurs have never actually practised.' },
@@ -46,9 +46,9 @@ export const CHILDREN: Record<string, ChildPage[]> = {
       blurb: 'Find the yardages you cannot cover, then fix the holes.' },
   ],
   scoring: [
-    { title: 'How to break 100', href: '/scoring/break-100/',
+    { title: 'How to break 100', href: '/scoring/break-100/', ready: true,
       blurb: 'Almost entirely about eliminating disasters, not hitting good shots.' },
-    { title: 'How to break 90', href: '/scoring/break-90/',
+    { title: 'How to break 90', href: '/scoring/break-90/', ready: true,
       blurb: 'The milestone where course management starts to outweigh technique.' },
     { title: 'How to break 80', href: '/scoring/break-80/',
       blurb: 'Converting chances. By here, avoiding mistakes is no longer enough.' },
