@@ -1,0 +1,75 @@
+---
+import Page from '../layouts/Page.astro';
+import { REVIEWER, AUTHOR, SITE } from '../consts';
+const trail = [{ name: 'Home', href: '/' }, { name: 'About', href: '/about/' }];
+---
+<Page
+  title={`About ${SITE.name}`}
+  eyebrow="Who we are"
+  description="Going Eagle is a golf improvement and equipment site built around measurement rather than opinion. Here is what we do, who does it, and why."
+  intro="There is no shortage of golf advice. There is a serious shortage of golf advice that tells you which part of your game to work on first."
+  trail={trail}
+>
+  <h2>The problem we are trying to solve</h2>
+  <p>
+    Ask the internet how to lower your scores and you will get a thousand tips, all technically
+    correct, none of them prioritised. Work on your grip. Widen your stance. Shorten your
+    backswing. Buy this driver. Every one of those might help somebody, and almost none of them
+    are aimed at you specifically.
+  </p>
+  <p>
+    Meanwhile the actual answer for most amateur golfers is unglamorous and measurable: you are
+    losing more strokes than you think inside 100 yards, you are hitting driver on holes where it
+    cannot help you, and the equipment you are about to buy will not fix either problem.
+  </p>
+
+  <h2>What we do differently</h2>
+  <ul>
+    <li>
+      <strong>We start with the number, not the tip.</strong> Our <a href="/tools/">free tools</a>
+      exist so you can find out what your round is actually losing before anyone tells you how
+      to swing.
+    </li>
+    <li>
+      <strong>One page per question.</strong> We do not publish four near-identical articles
+      about fixing a slice to catch four keyword variations. There is one page, and it is the
+      best one we can make.
+    </li>
+    <li>
+      <strong>We say what we do not know.</strong> Where we have not tested something, the page
+      says so. Where a statistic does not exist, we do not invent one.
+    </li>
+    <li>
+      <strong>We will tell you not to buy something.</strong> Often the honest recommendation is
+      a lesson, or the clubs already in your bag.
+    </li>
+  </ul>
+
+  <h2>Who makes it</h2>
+  <p>
+    Articles are researched and written by the <strong>{AUTHOR.name}</strong>. Golf content is
+    then reviewed by <a href={REVIEWER.url}>{REVIEWER.name}</a>, a golf coach with six years of
+    coaching experience, who checks the advice for accuracy and practical usefulness and approves
+    it before publication.
+  </p>
+  <p>
+    We keep those roles clearly labelled, because “written by an expert” and “checked by an
+    expert” are different claims and readers deserve to know which one they are getting. The
+    full process is on our <a href="/editorial-policy/">editorial policy</a> page.
+  </p>
+
+  <h2>How we are funded</h2>
+  <p>
+    Affiliate commission, disclosed on every page that carries a link. Commission never changes
+    the order of a recommendation — the reasoning is set out in
+    <a href="/affiliate-disclosure/">our disclosure</a> and
+    <a href="/gear/how-we-test/">our testing methodology</a>.
+  </p>
+
+  <h2>Where to start</h2>
+  <ul>
+    <li><a href="/tools/ball-flight-diagnostic/">Work out what your miss actually is</a></li>
+    <li><a href="/scoring/">Find the roadmap for your scoring milestone</a></li>
+    <li><a href="/gear/">Read a buying guide before you spend anything</a></li>
+  </ul>
+</Page>

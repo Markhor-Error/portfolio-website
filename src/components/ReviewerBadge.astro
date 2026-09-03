@@ -1,0 +1,46 @@
+---
+import { REVIEWER, AUTHOR } from '../consts';
+interface Props { compact?: boolean; updated?: string }
+const { compact = false, updated } = Astro.props;
+---
+<div class:list={['rev', compact && 'rev-compact']}>
+  <span class="rev-avatar" aria-hidden="true">{REVIEWER.initials}</span>
+  <div class="rev-body">
+    <p class="rev-line">
+      Written by <a href={AUTHOR.url}>{AUTHOR.name}</a> ·
+      Reviewed by <a href={REVIEWER.url}><strong>{REVIEWER.name}</strong></a>,
+      <span class="rev-cred">{REVIEWER.credential}</span>
+    </p>
+    {!compact && (
+      <p class="rev-note">
+        Mike reads golf articles before publication and checks the advice is accurate and
+        genuinely useful. <a href="/editorial-policy/">How our review process works</a>.
+        {updated && <> · Last updated <time datetime={updated}>{updated}</time></>}
+      </p>
+    )}
+  </div>
+</div>
+<style>
+  .rev {
+    display: flex; gap: var(--s-4); align-items: flex-start;
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: var(--r-lg); padding: var(--s-4) var(--s-5);
+    margin-block: var(--s-5);
+  }
+  .rev-compact { padding: var(--s-3) var(--s-4); align-items: center; }
+  /* Initials monogram, not a portrait. We do not use stock or AI-generated
+     images to represent real people — see /editorial-policy/. */
+  .rev-avatar {
+    flex-shrink: 0; display: grid; place-items: center;
+    width: 2.6rem; height: 2.6rem; border-radius: var(--r-pill);
+    background: var(--brand); color: var(--brand-ink);
+    font-family: var(--font-display); font-weight: 700; font-size: .9rem;
+    letter-spacing: .02em;
+  }
+  .rev-body { min-width: 0; }
+  .rev-line { margin: 0; font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.55; }
+  .rev-line strong { color: var(--text); }
+  .rev-cred { white-space: nowrap; }
+  .rev-note { margin: var(--s-2) 0 0; font-size: var(--fs-xs); color: var(--text-subtle);
+    line-height: 1.6; }
+</style>

@@ -1,0 +1,33 @@
+---
+import type { Heading } from '../lib/toc';
+interface Props { headings: Heading[] }
+const { headings } = Astro.props;
+---
+{headings.length > 2 && (
+  <nav class="toc" aria-labelledby="toc-h">
+    <h2 id="toc-h">On this page</h2>
+    <ol>
+      {headings.map((h) => (
+        <li class={h.depth === 3 ? 'sub' : ''}><a href={`#${h.slug}`}>{h.text}</a></li>
+      ))}
+    </ol>
+  </nav>
+)}
+<style>
+  .toc {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: var(--r-lg); padding: var(--s-4) var(--s-5);
+    margin-block: var(--s-6);
+  }
+  .toc h2 {
+    font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 700;
+    letter-spacing: .09em; text-transform: uppercase; color: var(--text-subtle);
+    margin: 0 0 var(--s-3);
+  }
+  .toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-2);
+    counter-reset: toc; }
+  .toc li { counter-increment: toc; }
+  .toc li.sub { padding-left: var(--s-5); }
+  .toc a { font-size: var(--fs-sm); color: var(--text-muted); text-decoration: none; }
+  .toc a:hover { color: var(--brand); text-decoration: underline; }
+</style>

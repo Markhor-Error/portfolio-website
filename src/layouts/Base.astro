@@ -1,0 +1,78 @@
+---
+import { SITE } from '../consts';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { organizationGraph, breadcrumbGraph, jsonLd } from '../lib/schema';
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description: string;
+  /** Extra @graph nodes (Article, FAQPage, ItemList…). */
+  schema?: unknown[];
+  trail?: { name: string; href: string }[];
+  noindex?: boolean;
+  ogImage?: string;
+}
+
+const { title, description, schema = [], trail, noindex = false, ogImage } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const fullTitle = title === SITE.name ? title : `${title} | ${SITE.name}`;
+const image = new URL(ogImage ?? '/og-default.svg', SITE.url).href;
+
+const graph = [
+  ...organizationGraph(),
+  ...(trail?.length ? [breadcrumbGraph(trail)] : []),
+  ...schema,
+];
+---
+<html lang={SITE.locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
+    <meta name="theme-color" content={SITE.themeColor} />
+    <meta name="generator" content={Astro.generator} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={image} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title={`${SITE.name} — latest`} href="/rss.xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap"
+    />
+
+    <!-- Applied before paint so a stored dark preference never flashes light. -->
+    <script is:inline>
+      try {
+        var t = localStorage.getItem('ge-theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    </script>
+
+    <script type="application/ld+json" is:inline set:html={jsonLd(graph)} />
+    <slot name="head" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main"><slot /></main>
+    <Footer />
+  </body>
+</html>

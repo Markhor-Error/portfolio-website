@@ -1,0 +1,64 @@
+---
+import Pillar from '../../layouts/Pillar.astro';
+import ChildGrid from '../../components/ChildGrid.astro';
+import { CHILDREN } from '../../data/clusters';
+import { SITE } from '../../consts';
+
+const items = CHILDREN['short-game'];
+const schema = [{
+  '@type': 'CollectionPage',
+  name: 'Short Game: Where Amateur Golfers Lose the Most Strokes',
+  description: 'Chipping, pitching, bunker play and putting. The scoring zone is where handicaps are actually made, and where practice pays back fastest.',
+  hasPart: items.map((i) => ({
+    '@type': 'WebPage', name: i.title, url: new URL(i.href, SITE.url).href,
+  })),
+}];
+---
+<Pillar
+  cluster="short-game"
+  title='Short Game: Where Amateur Golfers Lose the Most Strokes'
+  description='Chipping, pitching, bunker play and putting. The scoring zone is where handicaps are actually made, and where practice pays back fastest.'
+  intro='Inside 100 yards is the cheapest place in golf to find strokes. It needs no swing speed, no new equipment and no athletic ability — which is exactly why so few golfers practise it.'
+  schema={schema}
+>
+  <div class="pil-prose">
+      <h2>Why the short game pays back faster than anything else</h2>
+      <p>
+        A driver that goes fifteen yards further saves you a fraction of a stroke per round. Being
+        able to get up and down instead of taking three to get down saves you a full stroke every
+        time it happens, and for most mid-handicap golfers it happens several times a round.
+      </p>
+      <p>
+        The short game also degrades least with age and requires the least physical capability. A
+        68-year-old with a good short game will beat a strong 25-year-old without one, reliably,
+        forever.
+      </p>
+
+      <h2>The honest reason it gets neglected</h2>
+      <p>
+        Range practice feels better. Hitting fifty drivers produces a handful of shots that feel
+        superb, and that feeling is the reward. Hitting fifty chips produces no such moments — the
+        good ones are unremarkable by definition. The practice that improves your score is
+        frequently the practice that is least satisfying to do.
+      </p>
+
+      <div class="callout">
+        <p class="callout-title">A useful test</p>
+        <p>
+          Drop ten balls around a practice green at varying lies and try to get each one up and
+          down. Count the successes. Most golfers who describe their short game as "not bad" score
+          two or three out of ten, and are genuinely surprised by it.
+        </p>
+      </div>
+  </div>
+
+  <ChildGrid items={items} heading="Guides in this section" />
+</Pillar>
+
+<style>
+  .pil-prose { max-width: var(--w-prose); }
+  .pil-prose :global(h2) { margin-top: var(--s-7); font-size: var(--fs-xl); }
+  .pil-prose :global(li) { margin-bottom: var(--s-2); }
+  .pil-prose :global(li::marker) { color: var(--brand); }
+  .pil-prose :global(.table-scroll) { max-width: var(--w-content); }
+</style>

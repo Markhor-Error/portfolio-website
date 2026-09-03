@@ -1,0 +1,104 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import ReviewerBadge from '../components/ReviewerBadge.astro';
+import Prose from '../components/Prose.astro';
+import Toc from '../components/Toc.astro';
+import Faq from '../components/Faq.astro';
+import RelatedList from '../components/RelatedList.astro';
+import { clusterById, type ClusterId } from '../consts';
+import { articleGraph, faqGraph } from '../lib/schema';
+import { tocFrom, type Heading } from '../lib/toc';
+
+export interface Props {
+  title: string;
+  description: string;
+  cluster: ClusterId;
+  published: string;
+  updated?: string;
+  reviewed: boolean;
+  headings: Heading[];
+  faqs?: { q: string; a: string }[];
+  related?: { title: string; href: string; blurb?: string }[];
+  /** Answer-first summary. AEO depends on the answer being above the fold. */
+  answer?: string;
+}
+
+const {
+  title, description, cluster, published, updated, reviewed,
+  headings, faqs = [], related = [], answer,
+} = Astro.props;
+
+const c = clusterById(cluster);
+const path = Astro.url.pathname;
+const trail = [
+  { name: 'Home', href: '/' },
+  { name: c.label, href: c.href },
+  { name: title, href: path },
+];
+
+const schema: unknown[] = [
+  articleGraph({ title, description, path, published, updated, reviewed, section: c.label }),
+];
+if (faqs.length) schema.push(faqGraph(faqs, path));
+
+const toc = tocFrom(headings);
+const dateLabel = (d: string) =>
+  new Date(d + 'T00:00:00Z').toLocaleDateString('en-GB',
+    { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+<Base title={title} description={description} schema={schema} trail={trail}>
+  <article class="wrap-c art">
+    <header class="art-head">
+      <Breadcrumbs trail={trail} />
+      <p class="eyebrow"><a href={c.href}>{c.label}</a></p>
+      <h1>{title}</h1>
+      <p class="art-dates meta">
+        Published <time datetime={published}>{dateLabel(published)}</time>
+        {updated && <> · Updated <time datetime={updated}>{dateLabel(updated)}</time></>}
+      </p>
+      <ReviewerBadge updated={updated} />
+    </header>
+
+    {answer && (
+      <div class="answer">
+        <p class="answer-label">Short answer</p>
+        <p class="answer-text">{answer}</p>
+      </div>
+    )}
+
+    <Toc headings={toc} />
+
+    <Prose><slot /></Prose>
+
+    <div class="art-foot">
+      <Faq faqs={faqs} />
+      <RelatedList items={related} />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .art { padding-block: var(--s-6) var(--s-8); }
+  .art-head { max-width: var(--w-prose); margin-inline: auto; }
+  .art-head h1 { margin-bottom: var(--s-3); }
+  .art-head .eyebrow a { color: inherit; text-decoration: none; }
+  .art-head .eyebrow a:hover { text-decoration: underline; }
+  .art-dates { margin-bottom: var(--s-4); font-size: var(--fs-xs); }
+
+  /* Answer-first block. The single most useful thing for both a skimming reader
+     and an answer engine, so it sits above the table of contents. */
+  .answer {
+    max-width: var(--w-prose); margin: var(--s-6) auto;
+    background: var(--brand-soft); border: 1px solid var(--brand-border);
+    border-left: 3px solid var(--brand);
+    border-radius: var(--r-lg); padding: var(--s-4) var(--s-5);
+  }
+  .answer-label {
+    font-size: var(--fs-xs); font-weight: 700; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--brand); margin: 0 0 var(--s-2);
+  }
+  .answer-text { margin: 0; font-size: var(--fs-md); line-height: 1.65; color: var(--text); }
+
+  .art-foot { max-width: var(--w-prose); margin-inline: auto; }
+</style>

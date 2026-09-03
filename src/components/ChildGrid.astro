@@ -1,0 +1,42 @@
+---
+import type { ChildPage } from '../data/clusters';
+interface Props { items: ChildPage[]; heading?: string }
+const { items, heading } = Astro.props;
+---
+{heading && <h2 class="cg-h">{heading}</h2>}
+<ul class="cg">
+  {items.map((i) => (
+    <li>
+      {i.ready ? (
+        <a href={i.href} class="cg-card">
+          <strong>{i.title}</strong>
+          <span>{i.blurb}</span>
+        </a>
+      ) : (
+        <div class="cg-card is-planned">
+          <strong>{i.title} <em class="tag">In production</em></strong>
+          <span>{i.blurb}</span>
+        </div>
+      )}
+    </li>
+  ))}
+</ul>
+<style>
+  .cg-h { margin-top: var(--s-7); }
+  .cg { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-3);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
+  .cg-card { display: flex; flex-direction: column; gap: var(--s-2); height: 100%;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r-md); padding: var(--s-4);
+    text-decoration: none; color: inherit;
+    transition: border-color .15s ease, transform .15s ease; }
+  a.cg-card:hover { border-color: var(--brand); transform: translateY(-2px); }
+  .cg-card strong { font-size: var(--fs-base); color: var(--text); line-height: 1.35; }
+  .cg-card span { font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.55; }
+  .is-planned { background: transparent; border-style: dashed; }
+  .is-planned strong, .is-planned span { color: var(--text-subtle); }
+  .tag { font-style: normal; font-size: var(--fs-xs); font-weight: 600;
+    color: var(--text-subtle); background: var(--surface-2);
+    border: 1px solid var(--border); border-radius: var(--r-pill);
+    padding: .15em .6em; margin-left: .4em; white-space: nowrap; }
+</style>

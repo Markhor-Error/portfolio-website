@@ -1,0 +1,66 @@
+---
+import Pillar from '../../layouts/Pillar.astro';
+import ChildGrid from '../../components/ChildGrid.astro';
+import { CHILDREN } from '../../data/clusters';
+import { SITE } from '../../consts';
+
+const items = CHILDREN['home-golf'];
+const schema = [{
+  '@type': 'CollectionPage',
+  name: 'Home Golf: Building a Practice Setup That Actually Gets Used',
+  description: 'Golf simulators, launch monitors, nets, mats and enclosures — component by component, with realistic budgets and the costs nobody mentions upfront.',
+  hasPart: items.map((i) => ({
+    '@type': 'WebPage', name: i.title, url: new URL(i.href, SITE.url).href,
+  })),
+}];
+---
+<Pillar
+  cluster="home-golf"
+  title='Home Golf: Building a Practice Setup That Actually Gets Used'
+  description='Golf simulators, launch monitors, nets, mats and enclosures — component by component, with realistic budgets and the costs nobody mentions upfront.'
+  intro='A home setup is the difference between practising twice a month and practising four times a week. It is also the easiest place in golf to waste several thousand pounds on the wrong component order.'
+  schema={schema}
+>
+  <div class="pil-prose">
+      <h2>Build in the right order</h2>
+      <p>
+        The most common expensive mistake is buying the launch monitor first, then discovering the
+        room cannot accommodate it. Space constrains everything, so measure before you shop.
+      </p>
+      <ol>
+        <li><strong>Measure the space.</strong> Ceiling height first — it decides whether you can swing a driver at all. Then width, then depth.</li>
+        <li><strong>Choose the launch monitor.</strong> Camera-based units generally need space behind the ball; radar units generally need space in front. The room decides this, not the review scores.</li>
+        <li><strong>Buy the best hitting mat you can afford.</strong> This is the component people under-spend on, and a hard mat punishes your wrists and elbows over time.</li>
+        <li><strong>Then screen, enclosure, projector and software</strong>, in whatever order the budget allows.</li>
+      </ol>
+
+      <div class="callout callout-warn">
+        <p class="callout-title">The costs that surprise people</p>
+        <p>
+          Budget for the things that never appear in a headline package price: a short-throw
+          projector if the room is tight, a computer capable of running the software, lighting
+          consistent enough for a camera-based unit, and flooring or side netting to protect the
+          room. On a mid-range build these routinely add a third to the total.
+        </p>
+      </div>
+
+      <h2>Measured versus estimated data</h2>
+      <p>
+        This distinction matters more than any brand comparison. Every launch monitor
+        <em>measures</em> some values and <em>calculates</em> the rest from a model. A unit that
+        measures ball speed and estimates spin will look confident and be wrong in exactly the
+        situations where you most need it to be right. Before comparing prices, find out which
+        metrics each unit actually measures.
+      </p>
+  </div>
+
+  <ChildGrid items={items} heading="Guides in this section" />
+</Pillar>
+
+<style>
+  .pil-prose { max-width: var(--w-prose); }
+  .pil-prose :global(h2) { margin-top: var(--s-7); font-size: var(--fs-xl); }
+  .pil-prose :global(li) { margin-bottom: var(--s-2); }
+  .pil-prose :global(li::marker) { color: var(--brand); }
+  .pil-prose :global(.table-scroll) { max-width: var(--w-content); }
+</style>

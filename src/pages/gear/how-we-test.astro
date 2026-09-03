@@ -1,0 +1,122 @@
+---
+import Page from '../../layouts/Page.astro';
+import { REVIEWER } from '../../consts';
+const trail = [
+  { name: 'Home', href: '/' },
+  { name: 'Clubs & Gear', href: '/gear/' },
+  { name: 'How We Test', href: '/gear/how-we-test/' },
+];
+---
+<Page
+  title="How We Test and Rank Golf Equipment"
+  eyebrow="Methodology"
+  description="Our testing methodology, what our evidence labels mean, and an honest account of the limits of our equipment recommendations."
+  intro="Most gear roundups imply a level of testing that never happened. This page tells you exactly what evidence sits behind each recommendation on this site, including where that evidence is thin."
+  trail={trail}
+>
+  <div class="callout callout-key">
+    <p class="callout-title">The short version</p>
+    <p>
+      Every product recommendation on Going Eagle carries an evidence label saying how we
+      formed it. Nothing is described as tested unless someone physically hit it. Where our
+      evidence is research only, the page says so in the same size type as everything else.
+    </p>
+  </div>
+
+  <h2>Our evidence labels</h2>
+  <p>
+    You will see one of these three labels on every product we recommend. They are not marketing
+    language — they describe what we actually did.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Label</th><th scope="col">What it means</th><th scope="col">What it does not mean</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row"><span class="pill pill-brand">Hands-on</span></th>
+          <td>Someone on the team has hit, used or built with this product themselves, over more than a single session.</td>
+          <td>Not a controlled lab test. We are not a robot-testing facility and will not pretend to be one.</td>
+        </tr>
+        <tr>
+          <th scope="row"><span class="pill">Fitted data</span></th>
+          <td>Our assessment draws on launch monitor numbers gathered during a fitting or a range session with this model.</td>
+          <td>Not a claim that the numbers generalise to your swing. Fitting data is specific to the person who generated it.</td>
+        </tr>
+        <tr>
+          <th scope="row"><span class="pill pill-accent">Research-based</span></th>
+          <td>We have not used it. The assessment comes from manufacturer specifications, independent test data we cite, and owner feedback.</td>
+          <td>Not a personal endorsement. We say plainly when we have not touched something.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>What we actually assess</h2>
+  <p>
+    For clubs, the questions that matter to a mid-handicap golfer are not the ones that matter
+    to a tour player. We weight our assessments accordingly:
+  </p>
+  <ul>
+    <li><strong>Forgiveness on mis-hits</strong> — how much you lose on a strike off the centre, which for most amateurs matters more than peak distance.</li>
+    <li><strong>Launch and spin behaviour</strong> — whether the club suits a moderate swing speed or needs speed to work.</li>
+    <li><strong>Adjustability</strong> — whether you can change the setup as your swing changes, which affects how long the club stays useful.</li>
+    <li><strong>Real cost of ownership</strong> — street price rather than list price, and whether last year's model does the same job for less.</li>
+    <li><strong>Who it is wrong for</strong> — every recommendation names the golfer who should not buy it.</li>
+  </ul>
+
+  <h2>The limits of what we do</h2>
+  <p>
+    We would rather state these plainly than have you discover them:
+  </p>
+  <ul>
+    <li>
+      We do not run robot testing. Any comparison involving a human swing carries variance
+      we cannot fully eliminate, and we will not present a small sample as if it were definitive.
+    </li>
+    <li>
+      We cannot test every product in a category. A roundup covers the models that matter to
+      the reader, not every model on the market, and we say which ones we skipped.
+    </li>
+    <li>
+      Equipment performance is individual. A driver that adds fifteen yards for one golfer can
+      cost another five. This is why almost every guide here ends up recommending a fitting
+      over a specific product.
+    </li>
+    <li>
+      Prices move constantly. We do not print prices we cannot keep current — we describe price
+      tiers instead and point you at the retailer for the live figure.
+    </li>
+  </ul>
+
+  <h2>How commission affects our rankings</h2>
+  <p>
+    It does not, and here is the specific commitment: <strong>we rank on merit and then attach
+    links, never the other way round.</strong> Some of the brands we rate most highly pay
+    low commission rates or run no affiliate program at all. When the best answer is a product
+    we earn nothing from, or the answer is “keep the clubs you already own”, that is what the
+    page says.
+  </p>
+  <p>
+    Affiliate links are disclosed above the first one on every page, marked appropriately in the
+    HTML, and explained in full on our <a href="/affiliate-disclosure/">affiliate disclosure</a>.
+  </p>
+
+  <h2>Review before publication</h2>
+  <p>
+    Gear advice is reviewed by <a href={REVIEWER.url}>{REVIEWER.name}</a>,
+    {REVIEWER.credential}, before it is published — the same process described in our
+    <a href="/editorial-policy/">editorial policy</a>. A coach who fits clubs to real golfers is
+    a useful check on whether a recommendation would actually help the person reading it.
+  </p>
+
+  <h2>Tell us when we are wrong</h2>
+  <p>
+    If you own something we have reviewed and your experience contradicts ours, we want to hear
+    it. <a href="/contact/">Get in touch</a> — reader corrections have changed recommendations
+    on this site before, and we would rather be corrected than consistent.
+  </p>
+</Page>

@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import ReviewerBadge from '../components/ReviewerBadge.astro';
+import { clusterById, type ClusterId } from '../consts';
+
+export interface Props {
+  cluster: ClusterId;
+  title: string;
+  description: string;
+  intro: string;
+  schema?: unknown[];
+}
+const { cluster, title, description, intro, schema = [] } = Astro.props;
+const c = clusterById(cluster);
+const trail = [{ name: 'Home', href: '/' }, { name: c.label, href: c.href }];
+---
+<Base title={title} description={description} schema={schema} trail={trail}>
+  <div class="wrap">
+    <header class="pil-head">
+      <Breadcrumbs trail={trail} />
+      <p class="eyebrow">{c.label}</p>
+      <h1>{title}</h1>
+      <p class="pil-intro">{intro}</p>
+      <ReviewerBadge compact />
+    </header>
+  </div>
+  <div class="wrap pil-body"><slot /></div>
+</Base>
+
+<style>
+  .pil-head { padding-block: var(--s-6) var(--s-5); max-width: 52rem; }
+  .pil-head h1 { margin-bottom: var(--s-4); }
+  .pil-intro { font-size: var(--fs-lg); color: var(--text-muted); line-height: 1.6; }
+  .pil-body { padding-bottom: var(--s-8); }
+</style>

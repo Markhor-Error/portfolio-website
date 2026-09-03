@@ -1,0 +1,113 @@
+---
+import { SITE, CLUSTERS, REVIEWER } from '../consts';
+const year = new Date().getFullYear();
+const improve = CLUSTERS.filter((c) => c.group === 'improve');
+const gear = CLUSTERS.filter((c) => c.group === 'gear');
+---
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <span class="brand-text">Going&nbsp;<em>Eagle</em></span>
+        <p>{SITE.tagline}. Independent golf guidance, reviewed by a working coach.</p>
+        <p class="foot-review">
+          Golf content on this site is reviewed by
+          <a href={REVIEWER.url}>{REVIEWER.name}</a>, {REVIEWER.credential}.
+        </p>
+      </div>
+
+      <nav class="foot-col" aria-label="Improve your game">
+        <h2>Improve</h2>
+        <ul>{improve.map((c) => <li><a href={c.href}>{c.label}</a></li>)}
+          <li><a href="/fixes/slice/">How to Fix a Slice</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-label="Equipment">
+        <h2>Equipment</h2>
+        <ul>{gear.map((c) => <li><a href={c.href}>{c.label}</a></li>)}
+          <li><a href="/gear/how-we-test/">How We Test</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-label="Tools and reference">
+        <h2>Tools &amp; Reference</h2>
+        <ul>
+          <li><a href="/tools/">All Free Tools</a></li>
+          <li><a href="/tools/ball-flight-diagnostic/">Ball Flight Diagnostic</a></li>
+          <li><a href="/tools/handicap-calculator/">Handicap Calculator</a></li>
+          <li><a href="/basics/">Golf Basics</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-label="About this site">
+        <h2>About</h2>
+        <ul>
+          <li><a href="/about/">About Going Eagle</a></li>
+          <li><a href={REVIEWER.url}>{REVIEWER.name}</a></li>
+          <li><a href="/editorial-policy/">Editorial Policy</a></li>
+          <li><a href="/affiliate-disclosure/">Affiliate Disclosure</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="foot-bar">
+      <p class="foot-legal">
+        &copy; {year} {SITE.name}. Some links on this site are affiliate links — if you buy
+        through one we may earn a commission at no extra cost to you. It never changes how we
+        rank a product. <a href="/affiliate-disclosure/">Read the full disclosure</a>.
+      </p>
+      <ul class="foot-mini">
+        <li><a href="/privacy/">Privacy</a></li>
+        <li><a href="/terms/">Terms</a></li>
+        <li><a href="/sitemap-index.xml">Sitemap</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--surface-2);
+    border-top: 1px solid var(--border);
+    padding-block: var(--s-8) var(--s-5);
+    margin-top: var(--s-9);
+  }
+  .foot-grid {
+    display: grid; gap: var(--s-6);
+    grid-template-columns: 1.6fr repeat(4, 1fr);
+  }
+  .brand-text { font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; }
+  .brand-text em { font-style: normal; color: var(--brand); }
+  .foot-brand p { font-size: var(--fs-sm); color: var(--text-muted); margin: var(--s-3) 0 0;
+    max-width: 30ch; line-height: 1.6; }
+  .foot-review { font-size: var(--fs-xs) !important; }
+
+  .foot-col h2 { font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 700;
+    letter-spacing: .09em; text-transform: uppercase; color: var(--text-subtle);
+    margin: 0 0 var(--s-3); }
+  .foot-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-2); }
+  .foot-col a { font-size: var(--fs-sm); color: var(--text-muted); text-decoration: none; }
+  .foot-col a:hover { color: var(--brand); text-decoration: underline; }
+
+  .foot-bar {
+    display: flex; flex-wrap: wrap; gap: var(--s-4); justify-content: space-between;
+    align-items: baseline;
+    margin-top: var(--s-7); padding-top: var(--s-5);
+    border-top: 1px solid var(--border);
+  }
+  .foot-legal { font-size: var(--fs-xs); color: var(--text-subtle); margin: 0; max-width: 70ch;
+    line-height: 1.65; }
+  .foot-mini { display: flex; gap: var(--s-4); list-style: none; margin: 0; padding: 0; }
+  .foot-mini a { font-size: var(--fs-xs); color: var(--text-subtle); text-decoration: none; }
+  .foot-mini a:hover { color: var(--brand); }
+
+  @media (max-width: 62rem) {
+    .foot-grid { grid-template-columns: repeat(2, 1fr); }
+    .foot-brand { grid-column: 1 / -1; }
+  }
+  @media (max-width: 34rem) {
+    .foot-grid { grid-template-columns: 1fr; }
+  }
+</style>

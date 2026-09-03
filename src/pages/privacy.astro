@@ -1,0 +1,42 @@
+---
+import Page from '../layouts/Page.astro';
+const trail = [{ name: 'Home', href: '/' }, { name: 'Privacy', href: '/privacy/' }];
+---
+<Page
+  title="Privacy Policy"
+  description="What data Going Eagle collects, what it does not collect, and how the tools on this site handle the information you enter."
+  intro="The short version: our tools run entirely in your browser and we do not store what you type into them."
+  trail={trail}
+>
+  <h2>The calculators</h2>
+  <p>
+    Every tool on this site — the ball flight diagnostic, the handicap calculator and the rest —
+    runs as JavaScript in your own browser. Scores, ratings and answers you enter are never
+    transmitted to us, never written to a database, and disappear when you close the tab.
+  </p>
+
+  <h2>Analytics</h2>
+  <p>
+    We may use privacy-respecting analytics to understand which pages are useful. When analytics
+    are enabled, this page will name the provider and describe exactly what is collected. We will
+    not add tracking without updating this page first.
+  </p>
+
+  <h2>Affiliate links</h2>
+  <p>
+    When you click an affiliate link, the destination retailer may set a cookie so they can
+    attribute a purchase to us. That cookie is set by them, under their privacy policy, not ours.
+    Our <a href="/affiliate-disclosure/">affiliate disclosure</a> explains the arrangement.
+  </p>
+
+  <h2>Your browser storage</h2>
+  <p>
+    We store one thing locally: your light or dark theme preference. It stays in your browser,
+    is never sent to us, and clearing your site data removes it.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Questions about any of this go through our <a href="/contact/">contact page</a>.
+  </p>
+</Page>

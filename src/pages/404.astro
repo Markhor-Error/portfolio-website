@@ -1,0 +1,26 @@
+---
+import Base from '../layouts/Base.astro';
+import { CLUSTERS } from '../consts';
+---
+<Base title="Page not found" description="That page does not exist." noindex>
+  <div class="wrap-c nf">
+    <p class="eyebrow">404</p>
+    <h1>That page is not here.</h1>
+    <p class="nf-lead">
+      Either it moved, or the link was wrong. Here is where most people are heading.
+    </p>
+    <ul class="nf-links">
+      <li><a href="/tools/ball-flight-diagnostic/">Diagnose your miss</a></li>
+      {CLUSTERS.map((c) => <li><a href={c.href}>{c.label}</a></li>)}
+    </ul>
+  </div>
+</Base>
+<style>
+  .nf { padding-block: var(--s-9); max-width: 44rem; }
+  .nf-lead { font-size: var(--fs-lg); color: var(--text-muted); margin-bottom: var(--s-6); }
+  .nf-links { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-3); }
+  .nf-links a { display: inline-block; padding: .6em 1.1em; font-size: var(--fs-sm); font-weight: 600;
+    background: var(--surface); border: 1px solid var(--border-strong);
+    border-radius: var(--r-md); text-decoration: none; }
+  .nf-links a:hover { border-color: var(--brand); background: var(--surface-2); }
+</style>

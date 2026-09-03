@@ -1,0 +1,40 @@
+---
+import Page from '../layouts/Page.astro';
+const trail = [{ name: 'Home', href: '/' }, { name: 'Contact', href: '/contact/' }];
+---
+<Page
+  title="Contact Going Eagle"
+  eyebrow="Get in touch"
+  description="How to reach Going Eagle with a correction, a question about a recommendation, or a partnership enquiry."
+  intro="Corrections are the most useful thing you can send us. If something on this site is wrong, we want to fix it."
+  trail={trail}
+>
+  <h2>Corrections and factual queries</h2>
+  <p>
+    Tell us the page and what is wrong with it. Reader corrections have changed recommendations
+    on this site before. We would rather be corrected than consistent.
+  </p>
+
+  <h2>Questions about a recommendation</h2>
+  <p>
+    If you are trying to decide between two products and our page did not settle it, send us the
+    specifics — your handicap, your typical miss, and your budget. That context usually changes
+    the answer, and it tells us where a guide needs improving.
+  </p>
+
+  <h2>Brands and partnerships</h2>
+  <p>
+    We do not accept payment for reviews, placements or rankings, so please do not ask. We are
+    happy to hear from brands who want a product considered on the same terms as everything else
+    on the site — read <a href="/gear/how-we-test/">how we test</a> first so expectations are
+    clear.
+  </p>
+
+  <div class="callout">
+    <p class="callout-title">Contact details</p>
+    <p>
+      An email address and contact form will be published here once the site's mailbox is
+      configured. We are not publishing a placeholder address that bounces.
+    </p>
+  </div>
+</Page>

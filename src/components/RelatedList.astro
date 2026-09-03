@@ -1,0 +1,32 @@
+---
+interface Props { items: { title: string; href: string; blurb?: string }[]; heading?: string }
+const { items, heading = 'Read next' } = Astro.props;
+---
+{items.length > 0 && (
+  <section class="related" aria-labelledby="rel-h">
+    <h2 id="rel-h">{heading}</h2>
+    <ul>
+      {items.map((i) => (
+        <li>
+          <a href={i.href}>
+            <strong>{i.title}</strong>
+            {i.blurb && <span>{i.blurb}</span>}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+<style>
+  .related { margin-top: var(--s-8); padding-top: var(--s-6); border-top: 1px solid var(--border); }
+  .related h2 { font-size: var(--fs-xl); margin-bottom: var(--s-4); }
+  .related ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-3);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
+  .related a { display: flex; flex-direction: column; gap: var(--s-1); height: 100%;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md);
+    padding: var(--s-4); text-decoration: none; color: inherit;
+    transition: border-color .15s ease, transform .15s ease; }
+  .related a:hover { border-color: var(--brand); transform: translateY(-2px); }
+  .related strong { font-size: var(--fs-sm); color: var(--text); line-height: 1.4; }
+  .related span { font-size: var(--fs-xs); color: var(--text-muted); line-height: 1.55; }
+</style>

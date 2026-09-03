@@ -1,0 +1,88 @@
+---
+import Pillar from '../../layouts/Pillar.astro';
+import ChildGrid from '../../components/ChildGrid.astro';
+import { CHILDREN } from '../../data/clusters';
+import { SITE } from '../../consts';
+
+const items = CHILDREN['scoring'];
+const schema = [{
+  '@type': 'CollectionPage',
+  name: 'The Scoring Roadmap: Break 100, 90 and 80',
+  description: 'Each scoring milestone is a different problem with a different solution. Find out which one you are actually solving, and what changes at the next level.',
+  hasPart: items.map((i) => ({
+    '@type': 'WebPage', name: i.title, url: new URL(i.href, SITE.url).href,
+  })),
+}];
+---
+<Pillar
+  cluster="scoring"
+  title='The Scoring Roadmap: Break 100, 90 and 80'
+  description='Each scoring milestone is a different problem with a different solution. Find out which one you are actually solving, and what changes at the next level.'
+  intro='Breaking 100, breaking 90 and breaking 80 are not the same challenge with different difficulty settings. They are three genuinely different problems, and the advice that gets you through one will stall you at the next.'
+  schema={schema}
+>
+  <div class="pil-prose">
+      <h2>What actually changes at each milestone</h2>
+      <p>
+        This is the distinction most golf content misses. Understanding which problem you are
+        solving is worth more than any single tip.
+      </p>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Milestone</th><th scope="col">The real problem</th>
+              <th scope="col">What to work on</th><th scope="col">What to ignore</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Break 100</th>
+              <td>Disaster holes. One or two blow-ups per round account for the whole gap.</td>
+              <td>Keeping the ball in play, getting out of trouble in one shot, avoiding penalties.</td>
+              <td>Distance. Swing positions. Anything described as "compression".</td>
+            </tr>
+            <tr>
+              <th scope="row">Break 90</th>
+              <td>Decision-making. The swing is adequate; the choices are not.</td>
+              <td>Course management, reliable club distances, a repeatable short game.</td>
+              <td>Chasing pins. Hero recovery shots. New drivers.</td>
+            </tr>
+            <tr>
+              <th scope="row">Break 80</th>
+              <td>Conversion. Avoiding mistakes is no longer enough — you have to make birdies happen.</td>
+              <td>Wedge distance control, putting from 6 to 15 feet, strategy off the tee.</td>
+              <td>Anything that adds variance for a small average gain.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-key">
+        <p class="callout-title">The most expensive mistake in amateur golf</p>
+        <p>
+          Practising like the golfer you want to be instead of the golfer you are. A player trying
+          to break 100 who spends their practice time on driver distance is working hard on the
+          one thing that will not move their score.
+        </p>
+      </div>
+
+      <h2>Strategy beats technique, up to a point</h2>
+      <p>
+        For most golfers between 100 and 85, better decisions are worth more strokes than better
+        swings — and they are available immediately, without practice. Aiming at the middle of the
+        green instead of the flag, taking one more club, and laying up to a comfortable number are
+        free. They also feel unambitious, which is why so few people do them.
+      </p>
+  </div>
+
+  <ChildGrid items={items} heading="Guides in this section" />
+</Pillar>
+
+<style>
+  .pil-prose { max-width: var(--w-prose); }
+  .pil-prose :global(h2) { margin-top: var(--s-7); font-size: var(--fs-xl); }
+  .pil-prose :global(li) { margin-bottom: var(--s-2); }
+  .pil-prose :global(li::marker) { color: var(--brand); }
+  .pil-prose :global(.table-scroll) { max-width: var(--w-content); }
+</style>

@@ -1,0 +1,59 @@
+---
+import Pillar from '../../layouts/Pillar.astro';
+import ChildGrid from '../../components/ChildGrid.astro';
+import { CHILDREN } from '../../data/clusters';
+import { SITE } from '../../consts';
+
+const items = CHILDREN['basics'];
+const schema = [{
+  '@type': 'CollectionPage',
+  name: 'Golf Basics: The Game Explained Without Condescension',
+  description: 'Rules, scoring, handicaps, etiquette, formats and terminology — explained clearly for new golfers and anyone who never quite asked.',
+  hasPart: items.map((i) => ({
+    '@type': 'WebPage', name: i.title, url: new URL(i.href, SITE.url).href,
+  })),
+}];
+---
+<Pillar
+  cluster="basics"
+  title='Golf Basics: The Game Explained Without Condescension'
+  description='Rules, scoring, handicaps, etiquette, formats and terminology — explained clearly for new golfers and anyone who never quite asked.'
+  intro='Golf has an unusual amount of assumed knowledge, and an unhelpful culture around admitting you do not have it. Nothing here assumes you already know the answer.'
+  schema={schema}
+>
+  <div class="pil-prose">
+      <h2>What actually stops new golfers</h2>
+      <p>
+        It is rarely the swing. It is not knowing where to stand, when to walk, what to write on
+        the card, or what to do when the ball goes somewhere the rules have a specific opinion
+        about. That uncertainty is what makes the first few rounds stressful, and it is entirely
+        fixable in an afternoon of reading.
+      </p>
+
+      <div class="callout callout-key">
+        <p class="callout-title">The only three rules you need on day one</p>
+        <p>
+          Play the ball as it lies. Count every stroke, including the ones you would rather not.
+          Do not hold anybody up. Everything else can be learned as it comes up, and nobody
+          decent will mind.
+        </p>
+      </div>
+
+      <h2>Where to go next</h2>
+      <p>
+        If you are brand new, read the scoring explainer first — it makes everything else make
+        sense. If you have played a while but never got round to asking what a stroke index
+        column is for, the handicap guide is the one.
+      </p>
+  </div>
+
+  <ChildGrid items={items} heading="Guides in this section" />
+</Pillar>
+
+<style>
+  .pil-prose { max-width: var(--w-prose); }
+  .pil-prose :global(h2) { margin-top: var(--s-7); font-size: var(--fs-xl); }
+  .pil-prose :global(li) { margin-bottom: var(--s-2); }
+  .pil-prose :global(li::marker) { color: var(--brand); }
+  .pil-prose :global(.table-scroll) { max-width: var(--w-content); }
+</style>

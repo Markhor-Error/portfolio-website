@@ -1,0 +1,392 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ReviewerBadge from '../../components/ReviewerBadge.astro';
+import { FLIGHTS, STRIKE } from '../../data/ballflight';
+import { faqGraph } from '../../lib/schema';
+
+const title = 'Golf Ball Flight Diagnostic';
+const description =
+  'Pick where your ball starts and which way it curves, and find the impact conditions ' +
+  'causing it. A free ball flight law diagnostic for slices, hooks, pushes and pulls.';
+
+const trail = [
+  { name: 'Home', href: '/' },
+  { name: 'Free Tools', href: '/tools/' },
+  { name: 'Ball Flight Diagnostic', href: '/tools/ball-flight-diagnostic/' },
+];
+
+const faqs = [
+  {
+    q: 'Does the club path or the club face decide where the ball starts?',
+    a: 'The face is the dominant influence on start direction. Under the modern ball flight ' +
+       'laws the ball begins its flight close to where the face points at impact, and the ' +
+       'face has more influence the less loft the club has. The older idea that path alone ' +
+       'sets the start line has been superseded by launch monitor data.',
+  },
+  {
+    q: 'What actually makes a golf ball curve?',
+    a: 'The difference between the club face angle and the club path, often called ' +
+       'face-to-path. If the path is right of where the face points, the spin axis tilts left ' +
+       'and the ball curves left. If the path is left of the face, the ball curves right. ' +
+       'A face and path that match produce a straight ball.',
+  },
+  {
+    q: 'Why does my ball start left and curve right?',
+    a: 'That is a pull slice, and it is the most common miss in amateur golf. It means the ' +
+       'face was left of your target but the path was even further left of the face. The path ' +
+       'is usually the root cause, and alignment is usually the root cause of the path.',
+  },
+  {
+    q: 'Is this diagnostic accurate without a launch monitor?',
+    a: 'It infers impact conditions from the shot shape you observe, which is reliable for ' +
+       'identifying which pattern you have. It cannot give you numbers. If you want measured ' +
+       'face angle and path values you need a launch monitor, but you do not need one to work ' +
+       'out which of the nine ball flights you are hitting.',
+  },
+];
+
+const schema = [
+  faqGraph(faqs, '/tools/ball-flight-diagnostic/'),
+  {
+    '@type': 'WebApplication',
+    name: title,
+    applicationCategory: 'SportsApplication',
+    operatingSystem: 'Any',
+    description,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  },
+];
+---
+<Base title={title} description={description} schema={schema} trail={trail}>
+  <div class="wrap-c page">
+    <Breadcrumbs trail={trail} />
+    <p class="eyebrow">Free tool</p>
+    <h1>What is your ball actually doing?</h1>
+    <p class="lede">
+      Describe the shot you keep hitting and this will work backwards to the impact conditions
+      that produce it — then tell you which of them is worth fixing first. No email, no signup,
+      and nothing leaves your browser.
+    </p>
+    <ReviewerBadge compact />
+
+    <div class="tool" id="tool">
+      <div class="tool-bar">
+        <fieldset class="hand">
+          <legend>You play</legend>
+          <label><input type="radio" name="hand" value="rh" checked /> Right-handed</label>
+          <label><input type="radio" name="hand" value="lh" /> Left-handed</label>
+        </fieldset>
+        <div class="mode" role="tablist" aria-label="Problem type">
+          <button type="button" role="tab" id="tab-curve" aria-selected="true"
+                  aria-controls="panel-curve" class="mode-btn is-on">It curves in the air</button>
+          <button type="button" role="tab" id="tab-strike" aria-selected="false"
+                  aria-controls="panel-strike" class="mode-btn">Contact is the problem</button>
+        </div>
+      </div>
+
+      <div id="panel-curve" role="tabpanel" aria-labelledby="tab-curve">
+        <div class="qs">
+          <fieldset class="q">
+            <legend><span class="q-n">1</span> <span>Where does it <strong>start</strong>?</span></legend>
+            <div class="opts" data-group="start">
+              <button type="button" data-v="left"     class="opt">Left of target</button>
+              <button type="button" data-v="straight" class="opt">At the target</button>
+              <button type="button" data-v="right"    class="opt">Right of target</button>
+            </div>
+          </fieldset>
+          <fieldset class="q">
+            <legend><span class="q-n">2</span> <span>Which way does it <strong>curve</strong>?</span></legend>
+            <div class="opts" data-group="curve">
+              <button type="button" data-v="left"     class="opt">Curves left</button>
+              <button type="button" data-v="straight" class="opt">Does not curve</button>
+              <button type="button" data-v="right"    class="opt">Curves right</button>
+            </div>
+          </fieldset>
+        </div>
+        <p class="hint" id="hint">Pick one from each row to see your diagnosis.</p>
+      </div>
+
+      <div id="panel-strike" role="tabpanel" aria-labelledby="tab-strike" hidden>
+        <fieldset class="q">
+          <legend><span class="q-n">1</span> <span>What does the contact look like?</span></legend>
+          <div class="opts opts-wrap" data-group="strike">
+            {STRIKE.map((s) => (
+              <button type="button" data-v={s.id} class="opt">{s.name}</button>
+            ))}
+          </div>
+        </fieldset>
+      </div>
+
+      <output id="result" class="result" hidden aria-live="polite"></output>
+    </div>
+
+    <section class="explain">
+      <h2>How the two ball flight laws work</h2>
+      <p>
+        Nearly every curved golf shot comes down to two numbers at impact: where the face is
+        pointing, and where the club is travelling. Understanding the relationship between them
+        is the difference between fixing a slice and chasing it for a decade.
+      </p>
+
+      <figure class="diagram">
+        <svg viewBox="0 0 640 300" role="img"
+             aria-label="Diagram showing that the club face sets the ball's start direction while the difference between face and path bends the flight.">
+          <defs>
+            <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5"
+                    markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 10 5 0 10z" fill="var(--brand)"></path>
+            </marker>
+            <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5"
+                    markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 10 5 0 10z" fill="var(--accent)"></path>
+            </marker>
+          </defs>
+
+          <line x1="320" y1="272" x2="320" y2="30" stroke="var(--border-strong)"
+                stroke-width="2" stroke-dasharray="6 6"></line>
+          <text x="326" y="42" fill="var(--text-subtle)" font-size="13"
+                font-family="var(--font-body)">Target line</text>
+
+          <circle cx="320" cy="272" r="7" fill="var(--text)"></circle>
+          <text x="284" y="294" fill="var(--text-muted)" font-size="13"
+                font-family="var(--font-body)">Ball</text>
+
+          <!-- Face direction: sets the start line -->
+          <line x1="320" y1="272" x2="228" y2="60" stroke="var(--brand)" stroke-width="2.5"
+                marker-end="url(#ar)"></line>
+          <text x="130" y="52" fill="var(--brand)" font-size="14" font-weight="600"
+                font-family="var(--font-body)">1. Face sets the start line</text>
+
+          <!-- Actual flight: bends away from path -->
+          <path d="M320 272 Q 250 150 400 70" fill="none" stroke="var(--accent)"
+                stroke-width="3" marker-end="url(#ar2)"></path>
+          <text x="406" y="62" fill="var(--accent)" font-size="14" font-weight="600"
+                font-family="var(--font-body)">2. Face-to-path bends it</text>
+
+          <!-- Path arrow -->
+          <line x1="392" y1="288" x2="256" y2="212" stroke="var(--text-subtle)"
+                stroke-width="2" stroke-dasharray="4 4"></line>
+          <text x="396" y="292" fill="var(--text-subtle)" font-size="13"
+                font-family="var(--font-body)">Club path</text>
+        </svg>
+        <figcaption>
+          A pull slice for a right-hander: the face points left of target so the ball starts
+          left, but the path is further left still, so the ball bends back to the right.
+        </figcaption>
+      </figure>
+
+      <div class="callout callout-key">
+        <p class="callout-title">The part most golfers get backwards</p>
+        <p>
+          If your ball starts left and slices right, the instinct is to aim further left. That
+          makes the path more out-to-in, which makes the slice worse. The start line is not the
+          problem — the gap between face and path is.
+        </p>
+      </div>
+
+      <h2>All nine ball flights</h2>
+      <p>
+        Three start directions multiplied by three curve directions gives nine possible flights.
+        Every shot you have ever hit is one of them.
+      </p>
+      <div class="table-scroll">
+        <table>
+          <caption class="visually-hidden">The nine ball flights and their impact conditions</caption>
+          <thead>
+            <tr><th scope="col">Flight</th><th scope="col">Starts</th><th scope="col">Curves</th><th scope="col">Face and path at impact</th></tr>
+          </thead>
+          <tbody>
+            {Object.entries(FLIGHTS).map(([k, f]) => {
+              const [s, c] = k.split('-');
+              const w = (v: string) => v === 'straight' ? 'Straight' : v === 'left' ? 'Left' : 'Right';
+              return (
+                <tr>
+                  <th scope="row">{f.href ? <a href={f.href}>{f.name}</a> : f.name}</th>
+                  <td>{w(s)}</td>
+                  <td>{c === 'straight' ? 'No curve' : w(c)}</td>
+                  <td>{f.impact}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Directions above are for a right-handed golfer. The tool mirrors them if you select left-handed.</p>
+    </section>
+
+    <section class="faqs">
+      <h2>Common questions</h2>
+      {faqs.map((f) => (
+        <details><summary>{f.q}</summary><p>{f.a}</p></details>
+      ))}
+    </section>
+  </div>
+
+  <script define:vars={{ FLIGHTS, STRIKE }}>
+    const $ = (s) => document.querySelector(s);
+    const state = { start: null, curve: null, strike: null, hand: 'rh', mode: 'curve' };
+
+    const mirror = { left: 'right', right: 'left', straight: 'straight' };
+
+    /**
+     * Copy in ballflight.ts is written for a right-hander. For left-handers the
+     * directional words must flip too, otherwise the diagnosis reads backwards.
+     * This is safe only because body references in that file use lead/trail rather
+     * than left/right — any new copy must follow the same rule.
+     */
+    const flipText = (t) =>
+      t.replace(/\b(left|right|Left|Right)\b/g, (m) => {
+        const lower = m.toLowerCase() === 'left' ? 'right' : 'left';
+        return m[0] === m[0].toUpperCase()
+          ? lower[0].toUpperCase() + lower.slice(1)
+          : lower;
+      });
+
+    const list = (arr, lh) =>
+      `<ul>${arr.map((i) => `<li>${lh ? flipText(i) : i}</li>`).join('')}</ul>`;
+
+    function render() {
+      const box = $('#result');
+      const lh = state.hand === 'lh';
+
+      if (state.mode === 'strike') {
+        if (!state.strike) { box.hidden = true; return; }
+        const s = STRIKE.find((x) => x.id === state.strike);
+        box.innerHTML = `
+          <p class="r-label">Most likely</p>
+          <h3>${s.name}</h3>
+          <p class="r-impact">${lh ? flipText(s.symptom) : s.symptom}</p>
+          <p class="r-impact"><strong>At impact:</strong> ${lh ? flipText(s.impact) : s.impact}</p>
+          <div class="r-cols">
+            <div><h4>Why it happens</h4>${list(s.causes, lh)}</div>
+            <div><h4>What to work on</h4>${list(s.fixes, lh)}</div>
+          </div>
+          ${s.href ? `<a class="btn btn-primary" href="${s.href}">Read the full fix guide</a>` : ''}`;
+        box.hidden = false;
+        return;
+      }
+
+      if (!state.start || !state.curve) { box.hidden = true; return; }
+      // Mirror a left-hander's observed shot onto the right-handed lookup table.
+      const s = lh ? mirror[state.start] : state.start;
+      const c = lh ? mirror[state.curve] : state.curve;
+      const f = FLIGHTS[`${s}-${c}`];
+      if (!f) { box.hidden = true; return; }
+
+      box.innerHTML = `
+        <p class="r-label">Your miss</p>
+        <h3>${f.name}</h3>
+        <p class="r-impact">${lh ? flipText(f.impact) : f.impact}</p>
+        <div class="r-cols">
+          <div><h4>Why it happens</h4>${list(f.causes, lh)}</div>
+          <div><h4>What to work on</h4>${list(f.fixes, lh)}</div>
+        </div>
+        ${f.href ? `<a class="btn btn-primary" href="${f.href}">Read the full fix guide</a>` : ''}`;
+      box.hidden = false;
+      $('#hint').hidden = true;
+    }
+
+    document.querySelectorAll('.opts').forEach((group) => {
+      const name = group.dataset.group;
+      group.addEventListener('click', (e) => {
+        const btn = e.target.closest('.opt');
+        if (!btn) return;
+        group.querySelectorAll('.opt').forEach((b) => b.classList.remove('is-on'));
+        btn.classList.add('is-on');
+        state[name] = btn.dataset.v;
+        render();
+      });
+    });
+
+    document.querySelectorAll('input[name="hand"]').forEach((r) =>
+      r.addEventListener('change', (e) => { state.hand = e.target.value; render(); }));
+
+    const tabs = { curve: $('#tab-curve'), strike: $('#tab-strike') };
+    const panels = { curve: $('#panel-curve'), strike: $('#panel-strike') };
+    Object.entries(tabs).forEach(([mode, tab]) =>
+      tab.addEventListener('click', () => {
+        state.mode = mode;
+        Object.entries(tabs).forEach(([m, t]) => {
+          const on = m === mode;
+          t.classList.toggle('is-on', on);
+          t.setAttribute('aria-selected', String(on));
+          panels[m].hidden = !on;
+        });
+        render();
+      }));
+  </script>
+</Base>
+
+<style>
+  .page { padding-block: var(--s-6) var(--s-8); }
+  h1 { max-width: 22ch; }
+  .lede { font-size: var(--fs-lg); color: var(--text-muted); max-width: 60ch; }
+
+  .tool {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r-xl); padding: clamp(1.25rem, 3vw, 2rem);
+    margin-block: var(--s-6) var(--s-8); box-shadow: var(--shadow-sm);
+  }
+  .tool-bar { display: flex; flex-wrap: wrap; gap: var(--s-4);
+    justify-content: space-between; align-items: center; margin-bottom: var(--s-5);
+    padding-bottom: var(--s-4); border-bottom: 1px solid var(--border); }
+
+  .hand { border: 0; margin: 0; padding: 0; display: flex; gap: var(--s-4); align-items: center; }
+  .hand legend { float: left; font-size: var(--fs-xs); font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--text-subtle); margin-right: var(--s-3); }
+  .hand label { display: inline-flex; align-items: center; gap: var(--s-2); margin: 0;
+    font-size: var(--fs-sm); font-weight: 500; cursor: pointer; }
+  .hand input { width: auto; margin: 0; accent-color: var(--brand); }
+
+  .mode { display: flex; gap: var(--s-1); background: var(--surface-2);
+    border: 1px solid var(--border); border-radius: var(--r-md); padding: 3px; }
+  .mode-btn { font: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer;
+    padding: .5em 1em; border: 0; border-radius: calc(var(--r-md) - 2px);
+    background: transparent; color: var(--text-muted); }
+  .mode-btn.is-on { background: var(--surface); color: var(--brand); box-shadow: var(--shadow-sm); }
+
+  .qs { display: grid; gap: var(--s-5); }
+  .q { border: 0; margin: 0; padding: 0; }
+  .q legend { font-size: var(--fs-base); font-weight: 600; margin-bottom: var(--s-3);
+    display: flex; align-items: center; gap: var(--s-3); }
+  .q-n { display: grid; place-items: center; width: 1.5rem; height: 1.5rem;
+    border-radius: var(--r-pill); background: var(--brand-soft); color: var(--brand);
+    font-size: var(--fs-xs); font-weight: 700; }
+  .opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-2); }
+  .opts-wrap { grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr)); }
+  .opt { font: inherit; font-size: var(--fs-sm); font-weight: 600; cursor: pointer;
+    padding: .85em .6em; text-align: center;
+    background: var(--surface); color: var(--text);
+    border: 1px solid var(--border-strong); border-radius: var(--r-md);
+    transition: border-color .12s ease, background-color .12s ease; }
+  .opt:hover { border-color: var(--brand); background: var(--surface-2); }
+  .opt.is-on { background: var(--brand); color: var(--brand-ink); border-color: var(--brand); }
+
+  .hint { font-size: var(--fs-sm); color: var(--text-subtle); margin: var(--s-4) 0 0; }
+
+  .result { display: block; margin-top: var(--s-5); padding-top: var(--s-5);
+    border-top: 1px solid var(--border); }
+  .result :global(.r-label) { font-size: var(--fs-xs); font-weight: 700; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--brand); margin: 0 0 var(--s-2); }
+  .result :global(h3) { font-size: var(--fs-2xl); margin-bottom: var(--s-3); }
+  .result :global(.r-impact) { font-size: var(--fs-md); color: var(--text-muted);
+    line-height: 1.7; max-width: 68ch; }
+  .result :global(.r-cols) { display: grid; gap: var(--s-5); margin-block: var(--s-5);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
+  .result :global(h4) { font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--text-subtle);
+    margin: 0 0 var(--s-3); }
+  .result :global(ul) { margin: 0; padding-left: 1.15em; }
+  .result :global(li) { font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.6;
+    margin-bottom: var(--s-2); }
+  .result :global(li::marker) { color: var(--brand); }
+
+  .explain { max-width: var(--w-prose); }
+  .explain h2 { margin-top: var(--s-8); }
+  .diagram { margin: var(--s-6) 0; background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r-lg); padding: var(--s-5); }
+  .note { font-size: var(--fs-xs); color: var(--text-subtle); }
+  .faqs { max-width: var(--w-prose); margin-top: var(--s-8); }
+  .faqs p { font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.7; margin: 0; }
+</style>

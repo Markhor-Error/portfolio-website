@@ -1,0 +1,211 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE, CLUSTERS, REVIEWER } from '../consts';
+
+const entryPaths = [
+  {
+    eyebrow: 'Something is wrong',
+    title: 'My ball keeps doing that',
+    body: 'Slice, hook, shank, top, chunk. Pick the miss and work back to the cause instead of guessing at fixes.',
+    href: '/tools/ball-flight-diagnostic/',
+    cta: 'Diagnose my miss',
+  },
+  {
+    eyebrow: 'I have a number in mind',
+    title: 'I want to break 100, 90 or 80',
+    body: 'Each milestone is a different problem. Breaking 100 is about avoiding disasters; breaking 80 is about converting chances.',
+    href: '/scoring/',
+    cta: 'See the roadmap',
+  },
+  {
+    eyebrow: 'I am about to spend money',
+    title: 'I need to buy something',
+    body: 'What the equipment actually changes, what it cannot fix, and when the honest answer is to keep what you own.',
+    href: '/gear/',
+    cta: 'Buying guides',
+  },
+];
+
+// Only tools that are built are surfaced here; the rest appear on /tools/ as planned.
+const tools = [
+  { name: 'Ball Flight Diagnostic', href: '/tools/ball-flight-diagnostic/', desc: 'Pick your miss, get the likely cause.' },
+  { name: 'Handicap Calculator',    href: '/tools/handicap-calculator/',    desc: 'Work out an index from your scores.' },
+];
+
+const schema = [{
+  '@type': 'ItemList',
+  name: 'Going Eagle free golf tools',
+  itemListElement: tools.map((t, i) => ({
+    '@type': 'ListItem', position: i + 1, name: t.name,
+    url: new URL(t.href, SITE.url).href,
+  })),
+}];
+---
+<Base
+  title={SITE.name}
+  description={SITE.description}
+  schema={schema}
+>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-inner">
+      <p class="eyebrow">Golf improvement, measured</p>
+      <h1>Stop guessing at what&nbsp;is costing you&nbsp;strokes.</h1>
+      <p class="hero-lead">
+        Most golf advice tells you what a good swing looks like. That is not the same as telling
+        you what <em>your</em> round is losing. Going Eagle starts with the number, works back to
+        the cause, and only then talks about a fix — or a purchase.
+      </p>
+      <div class="cluster hero-cta">
+        <a class="btn btn-primary btn-lg" href="/tools/ball-flight-diagnostic/">Diagnose your miss</a>
+        <a class="btn btn-secondary btn-lg" href="/scoring/">Start with your score</a>
+      </div>
+      <p class="hero-trust">
+        Golf content reviewed before publication by
+        <a href={REVIEWER.url}>{REVIEWER.name}</a>, {REVIEWER.credential}.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2 class="sec-title">Where do you want to start?</h2>
+      <div class="grid grid-3">
+        {entryPaths.map((p) => (
+          <a class="card card-link path" href={p.href}>
+            <p class="eyebrow">{p.eyebrow}</p>
+            <h3>{p.title}</h3>
+            <p>{p.body}</p>
+            <span class="path-cta">{p.cta} &rarr;</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section tools-band">
+    <div class="wrap">
+      <div class="band-head">
+        <div>
+          <p class="eyebrow">Free, no signup</p>
+          <h2 class="sec-title">Tools that give you a number</h2>
+          <p class="band-sub">
+            An opinion about your swing is cheap. A measurement is useful. These are free, run
+            entirely in your browser, and store nothing.
+          </p>
+        </div>
+        <a class="btn btn-secondary" href="/tools/">All tools</a>
+      </div>
+      <ul class="tool-list">
+        {tools.map((t) => (
+          <li>
+            <a href={t.href}>
+              <strong>{t.name}</strong>
+              <span>{t.desc}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2 class="sec-title">Everything on the site</h2>
+      <div class="grid cluster-grid">
+        {CLUSTERS.filter((c) => c.id !== 'tools').map((c) => (
+          <a class="card card-link" href={c.href}>
+            <h3>{c.label}</h3>
+            <p>{c.blurb}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="trust">
+        <h2>Why you can trust a recommendation here</h2>
+        <div class="grid grid-3 trust-grid">
+          <div>
+            <h3>A coach checks the advice</h3>
+            <p>
+              Articles are written by our editorial team, then reviewed by {REVIEWER.name} — a golf
+              coach with six years of coaching experience — before they go live.
+              <a href="/editorial-policy/">Our editorial policy</a>.
+            </p>
+          </div>
+          <div>
+            <h3>We say how we tested</h3>
+            <p>
+              Every gear page states plainly whether a recommendation is hands-on or
+              research-based. We will not call something tested if it was not.
+              <a href="/gear/how-we-test/">How we test</a>.
+            </p>
+          </div>
+          <div>
+            <h3>Commission never moves a ranking</h3>
+            <p>
+              We use affiliate links and we say so above the first one. If the cheaper product is
+              the better product, it goes first. <a href="/affiliate-disclosure/">Full disclosure</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding-block: clamp(3rem, 8vw, 6rem) clamp(2.5rem, 6vw, 4.5rem);
+    background:
+      radial-gradient(60rem 30rem at 12% -10%, var(--brand-soft), transparent 62%),
+      radial-gradient(46rem 26rem at 92% 8%, var(--accent-soft), transparent 60%);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-inner { max-width: 54rem; }  /* left-aligned inside .wrap, not re-centred */
+  .hero h1 { font-size: var(--fs-4xl); margin-bottom: var(--s-5); }
+  .hero-lead { font-size: var(--fs-lg); color: var(--text-muted); max-width: 46rem;
+    margin-bottom: var(--s-6); }
+  .hero-lead em { color: var(--text); font-style: italic; }
+  .hero-cta { margin-bottom: var(--s-5); }
+  .hero-trust { font-size: var(--fs-xs); color: var(--text-subtle); margin: 0; }
+
+  .sec-title { margin-bottom: var(--s-5); }
+
+  .path { display: flex; flex-direction: column; }
+  .path p:not(.eyebrow) { flex: 1; }
+  .path-cta { margin-top: var(--s-4); font-size: var(--fs-sm); font-weight: 600; color: var(--brand); }
+
+  .tools-band { background: var(--surface-2); border-block: 1px solid var(--border); }
+  .band-head { display: flex; gap: var(--s-5); justify-content: space-between;
+    align-items: flex-end; flex-wrap: wrap; margin-bottom: var(--s-5); }
+  .band-head .sec-title { margin-bottom: var(--s-3); }
+  .band-sub { color: var(--text-muted); font-size: var(--fs-sm); max-width: 52ch; margin: 0; }
+
+  .tool-list { list-style: none; margin: 0; padding: 0;
+    display: grid; gap: var(--s-3);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 13.5rem), 1fr)); }
+  .tool-list a {
+    display: flex; flex-direction: column; gap: var(--s-1); height: 100%;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r-md); padding: var(--s-4);
+    text-decoration: none; color: inherit;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .tool-list a:hover { border-color: var(--brand); transform: translateY(-2px); }
+  .tool-list strong { font-size: var(--fs-sm); color: var(--text); }
+  .tool-list span { font-size: var(--fs-xs); color: var(--text-muted); line-height: 1.5; }
+
+  .trust { background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r-xl); padding: clamp(1.5rem, 4vw, 3rem); }
+  .trust > h2 { margin-bottom: var(--s-6); }
+  .cluster-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
+  .trust-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); }
+  .trust-grid h3 { font-size: var(--fs-base); font-family: var(--font-body); font-weight: 700;
+    margin-bottom: var(--s-2); }
+  .trust-grid p { font-size: var(--fs-sm); color: var(--text-muted); margin: 0; line-height: 1.65; }
+</style>

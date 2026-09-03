@@ -1,0 +1,53 @@
+---
+import Page from '../layouts/Page.astro';
+const trail = [{ name: 'Home', href: '/' }, { name: 'Terms', href: '/terms/' }];
+---
+<Page
+  title="Terms of Use"
+  description="The terms covering use of Going Eagle, including the limits of the golf advice and calculators published here."
+  intro="Plain terms for a content site. Nothing unusual, but worth stating."
+  trail={trail}
+>
+  <h2>What this site is</h2>
+  <p>
+    Going Eagle publishes golf instruction, equipment guidance and free calculators. It is
+    general information, not personal coaching. Golf technique is individual, and advice that
+    helps one player can hurt another — which is why we recommend a qualified coach for anything
+    that matters to you.
+  </p>
+
+  <h2>The calculators</h2>
+  <p>
+    Our tools produce estimates using published methods. The handicap calculator in particular is
+    <strong>not an official handicap index</strong> and does not apply every adjustment a golf
+    association would. Do not use it for competition purposes. Each tool states its own limits on
+    its page.
+  </p>
+
+  <h2>Injury and physical risk</h2>
+  <p>
+    Golf swings put load on the back, wrists and elbows. If you have an injury or a medical
+    condition, take advice from a qualified professional before changing your technique or your
+    practice volume.
+  </p>
+
+  <h2>Accuracy</h2>
+  <p>
+    We work hard to be accurate and we correct mistakes when we find them or when readers report
+    them. We cannot guarantee that every detail is current at the moment you read it, particularly
+    for prices and product availability. Our <a href="/editorial-policy/">editorial policy</a>
+    describes how we keep pages current.
+  </p>
+
+  <h2>Affiliate relationships</h2>
+  <p>
+    We earn commission on some purchases made through our links, disclosed on every page that
+    carries one. See the <a href="/affiliate-disclosure/">full disclosure</a>.
+  </p>
+
+  <h2>Content ownership</h2>
+  <p>
+    The writing, diagrams and tools on this site are ours. Quote us with a link — do not republish
+    pages wholesale.
+  </p>
+</Page>

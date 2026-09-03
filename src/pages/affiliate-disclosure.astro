@@ -1,0 +1,72 @@
+---
+import Page from '../layouts/Page.astro';
+const trail = [{ name: 'Home', href: '/' }, { name: 'Affiliate Disclosure', href: '/affiliate-disclosure/' }];
+---
+<Page
+  title="Affiliate Disclosure"
+  eyebrow="Money"
+  description="How Going Eagle makes money, what an affiliate link is, and the specific rules we follow so that commission never influences a recommendation."
+  intro="Going Eagle uses affiliate links. Here is precisely what that means, what it costs you, and the rules we have set so it cannot bend our advice."
+  trail={trail}
+>
+  <h2>The plain version</h2>
+  <p>
+    Some links on this site are affiliate links. If you click one and buy something, the retailer
+    pays us a small commission. <strong>You pay exactly the same price either way</strong> — the
+    commission comes out of the retailer's margin, not your pocket.
+  </p>
+  <p>
+    That is how this site is funded. There is no paywall, no subscription and no sponsored
+    content, and we would rather be honest about the trade-off than pretend the content is free
+    to produce.
+  </p>
+
+  <h2>What we will not do</h2>
+  <p>These are commitments, not aspirations. If we break one, hold us to it.</p>
+  <ul>
+    <li>
+      <strong>We will not re-order a ranking for money.</strong> If the product paying us 3% is
+      better than the one paying 10%, the 3% product goes first. Our
+      <a href="/gear/how-we-test/">testing methodology</a> is published so you can check our
+      reasoning against our conclusions.
+    </li>
+    <li>
+      <strong>We will not accept payment for a positive review.</strong> No brand can buy a score,
+      a placement, or a favourable sentence on this site.
+    </li>
+    <li>
+      <strong>We will not hide the disclosure.</strong> It appears above the first affiliate link
+      on the page, not only down here in the small print.
+    </li>
+    <li>
+      <strong>We will not replace a citation with an affiliate link.</strong> When a claim needs a
+      source, it gets a source, even when there is a monetisable alternative.
+    </li>
+    <li>
+      <strong>We will not recommend a purchase you do not need.</strong> A significant number of
+      pages here conclude that the reader should keep the equipment they own and spend the money
+      on a lesson instead.
+    </li>
+  </ul>
+
+  <h2>How to spot an affiliate link</h2>
+  <p>
+    Affiliate links on this site are marked in the page's HTML with
+    <code>rel="sponsored nofollow"</code>, which is the standard signal search engines and browser
+    tools use to identify them. Every page containing one carries a visible notice above the
+    first instance.
+  </p>
+
+  <h2>Programs we participate in</h2>
+  <p>
+    We work with golf retailers and manufacturers through affiliate networks. As our program
+    memberships are confirmed we will list them here by name, so you can see exactly who has a
+    financial relationship with this site.
+  </p>
+
+  <h2>Questions</h2>
+  <p>
+    If anything about our commercial arrangements is unclear, ask.
+    <a href="/contact/">Contact us</a> and we will answer directly.
+  </p>
+</Page>

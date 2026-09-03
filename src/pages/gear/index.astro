@@ -1,0 +1,69 @@
+---
+import Pillar from '../../layouts/Pillar.astro';
+import ChildGrid from '../../components/ChildGrid.astro';
+import { CHILDREN } from '../../data/clusters';
+import { SITE } from '../../consts';
+
+const items = CHILDREN['gear'];
+const schema = [{
+  '@type': 'CollectionPage',
+  name: 'Golf Equipment Guides: What to Buy, and When Not To',
+  description: 'Buying guides and reviews for drivers, irons, wedges, putters, balls and rangefinders — with an honest account of what equipment can and cannot fix.',
+  hasPart: items.map((i) => ({
+    '@type': 'WebPage', name: i.title, url: new URL(i.href, SITE.url).href,
+  })),
+}];
+---
+<Pillar
+  cluster="gear"
+  title='Golf Equipment Guides: What to Buy, and When Not To'
+  description='Buying guides and reviews for drivers, irons, wedges, putters, balls and rangefinders — with an honest account of what equipment can and cannot fix.'
+  intro='Equipment can genuinely help. It cannot fix a swing fault, and the industry has a strong commercial interest in blurring that line. These guides try not to.'
+  schema={schema}
+>
+  <div class="pil-prose">
+      <h2>Read this before you spend anything</h2>
+      <p>
+        Three things are true at the same time, and most gear content only admits the first:
+      </p>
+      <ul>
+        <li><strong>Modern equipment is genuinely better</strong> than equipment from fifteen years ago, particularly in forgiveness on off-centre strikes.</li>
+        <li><strong>Fitting matters more than model.</strong> A well-fitted mid-range club will outperform a poorly-fitted premium one, consistently.</li>
+        <li><strong>Equipment cannot fix a swing fault.</strong> A draw-biased driver reduces a slice. It does not cure the out-to-in path producing it, and the fault will reappear the moment you change clubs.</li>
+      </ul>
+
+      <div class="callout callout-key">
+        <p class="callout-title">Our bias, stated openly</p>
+        <p>
+          We earn commission when you buy through our links, which gives us an obvious incentive
+          to tell you to buy things. We manage it by publishing
+          <a href="/gear/how-we-test/">how we test</a>, labelling the evidence behind every
+          recommendation, and saying plainly when the answer is to keep what you own. Judge us
+          against that.
+        </p>
+      </div>
+
+      <h2>Where the money is best spent</h2>
+      <p>
+        If you have a fixed budget and want the most strokes per pound, this is roughly the order
+        that works for a mid-handicap golfer — and it is not the order the industry advertises.
+      </p>
+      <ol>
+        <li><strong>A fitting</strong>, even for clubs you already own. Lie angle and shaft alone can change ball flight substantially.</li>
+        <li><strong>Wedges</strong>, if yours are worn. Grooves lose spin, and worn wedges cost you short-game control every round.</li>
+        <li><strong>A putter that fits your stroke</strong>, which is a fitting question rather than a price question.</li>
+        <li><strong>Golf balls</strong> matched to your swing speed. The cheapest meaningful change available.</li>
+        <li><strong>A driver</strong>, last. It is the most expensive club and the one you hit fourteen times a round.</li>
+      </ol>
+  </div>
+
+  <ChildGrid items={items} heading="Guides in this section" />
+</Pillar>
+
+<style>
+  .pil-prose { max-width: var(--w-prose); }
+  .pil-prose :global(h2) { margin-top: var(--s-7); font-size: var(--fs-xl); }
+  .pil-prose :global(li) { margin-bottom: var(--s-2); }
+  .pil-prose :global(li::marker) { color: var(--brand); }
+  .pil-prose :global(.table-scroll) { max-width: var(--w-content); }
+</style>

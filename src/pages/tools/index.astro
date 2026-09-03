@@ -1,0 +1,88 @@
+---
+import Page from '../../layouts/Page.astro';
+import { SITE } from '../../consts';
+
+const trail = [{ name: 'Home', href: '/' }, { name: 'Free Tools', href: '/tools/' }];
+
+const tools = [
+  { name: 'Ball Flight Diagnostic', href: '/tools/ball-flight-diagnostic/', ready: true,
+    desc: 'Describe the shot you keep hitting and work backwards to the impact conditions causing it. Covers all nine ball flights plus strike faults.' },
+  { name: 'Handicap Calculator', href: '/tools/handicap-calculator/', ready: true,
+    desc: 'Enter your recent scores with course and slope ratings to estimate a handicap index, with the calculation shown step by step.' },
+  { name: 'Scoring Benchmark', href: '/tools/scoring-benchmark/',
+    desc: 'See how a round compares against typical amateur scoring, and which part of it is costing you the most.' },
+  { name: 'Wedge Gapping', href: '/tools/wedge-gapping/',
+    desc: 'Enter your wedge distances and find the yardages you cannot cover.' },
+  { name: 'Club Distance Chart', href: '/tools/club-distance-chart/',
+    desc: 'Build a printable chart of your real carry distances rather than your best-ever ones.' },
+  { name: 'Simulator Budget', href: '/tools/simulator-budget/',
+    desc: 'Pick a budget and a room size, get a realistic component list including the costs people forget.' },
+];
+
+const schema = [{
+  '@type': 'ItemList',
+  name: 'Free golf tools',
+  itemListElement: tools.filter((t) => t.ready).map((t, i) => ({
+    '@type': 'ListItem', position: i + 1, name: t.name,
+    url: new URL(t.href, SITE.url).href,
+  })),
+}];
+---
+<Page
+  title="Free Golf Tools and Calculators"
+  eyebrow="Free, no signup"
+  description="Free golf calculators and diagnostics: ball flight diagnosis, handicap calculation, wedge gapping, club distances and simulator budgeting."
+  intro="An opinion about your golf game is cheap. A measurement is useful. Everything here is free, runs entirely in your browser, and stores nothing."
+  trail={trail}
+  schema={schema}
+>
+  <ul class="tools">
+    {tools.map((t) => (
+      <li>
+        {t.ready ? (
+          <a href={t.href} class="t-card">
+            <strong>{t.name}</strong>
+            <span>{t.desc}</span>
+            <em class="go">Open tool &rarr;</em>
+          </a>
+        ) : (
+          <div class="t-card is-planned">
+            <strong>{t.name} <em class="tag">In production</em></strong>
+            <span>{t.desc}</span>
+          </div>
+        )}
+      </li>
+    ))}
+  </ul>
+
+  <h2>Why we build these</h2>
+  <p>
+    Golf content is saturated with advice and almost empty of measurement. You can read fifty
+    articles about fixing a slice without ever establishing which slice you have, and buy a
+    launch monitor without ever working out what your room can accommodate.
+  </p>
+  <p>
+    These tools exist to put a number, or at least a specific answer, in front of you before the
+    advice starts. They run client-side: nothing you type is sent anywhere, and nothing is stored.
+  </p>
+</Page>
+
+<style>
+  .tools { list-style: none; margin: 0 0 var(--s-7); padding: 0; display: grid; gap: var(--s-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+    max-width: var(--w-content); }
+  .t-card { display: flex; flex-direction: column; gap: var(--s-2); height: 100%;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r-lg); padding: var(--s-5);
+    text-decoration: none; color: inherit;
+    transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease; }
+  a.t-card:hover { border-color: var(--brand); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .t-card strong { font-size: var(--fs-lg); font-family: var(--font-display); }
+  .t-card span { font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.6; flex: 1; }
+  .go { font-style: normal; font-size: var(--fs-sm); font-weight: 600; color: var(--brand); }
+  .is-planned { background: transparent; border-style: dashed; }
+  .is-planned strong, .is-planned span { color: var(--text-subtle); }
+  .tag { font-style: normal; font-size: var(--fs-xs); font-weight: 600; color: var(--text-subtle);
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: var(--r-pill); padding: .15em .6em; margin-left: .4em; white-space: nowrap; }
+</style>

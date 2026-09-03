@@ -1,0 +1,70 @@
+---
+import Pillar from '../../layouts/Pillar.astro';
+import ChildGrid from '../../components/ChildGrid.astro';
+import { CHILDREN } from '../../data/clusters';
+import { SITE } from '../../consts';
+
+const items = CHILDREN['fixes'];
+const schema = [{
+  '@type': 'CollectionPage',
+  name: 'Golf Swing Fixes: Diagnose the Miss Before You Change Anything',
+  description: 'Work out which of the nine ball flights you are hitting, what it says about your face and path at impact, and which fix to try first.',
+  hasPart: items.map((i) => ({
+    '@type': 'WebPage', name: i.title, url: new URL(i.href, SITE.url).href,
+  })),
+}];
+---
+<Pillar
+  cluster="fixes"
+  title='Golf Swing Fixes: Diagnose the Miss Before You Change Anything'
+  description='Work out which of the nine ball flights you are hitting, what it says about your face and path at impact, and which fix to try first.'
+  intro='Almost every golfer tries to fix a bad shot before they have correctly identified what the bad shot is. Start here instead: name the miss, understand what it says about impact, then change one thing.'
+  schema={schema}
+>
+  <div class="pil-prose">
+      <h2>Fix the cause, not the symptom</h2>
+      <p>
+        Two golfers can hit an identical-looking slice for opposite reasons. One has a face that
+        will not square. The other has a face that is fine and a path that swings hard across the
+        ball. Give them the same tip and you help one and ruin the other.
+      </p>
+      <p>
+        This is why every guide in this section starts from impact conditions rather than from a
+        drill. Under the modern ball flight laws, the ball starts close to where the
+        <strong>face</strong> points, and it curves according to the difference between the
+        <strong>face and the path</strong>. Those two facts explain every shot you have ever hit,
+        and they tell you which of your habits is actually responsible.
+      </p>
+
+      <div class="callout callout-key">
+        <p class="callout-title">Two minutes well spent</p>
+        <p>
+          The <a href="/tools/ball-flight-diagnostic/">ball flight diagnostic</a> asks where your
+          shot starts and which way it bends, then tells you what that combination means at
+          impact. It is free, and it will stop you working on the wrong thing.
+        </p>
+      </div>
+
+      <h2>The order to work in</h2>
+      <p>
+        When a lesson gets expensive, it is usually because the golfer started at step four.
+        Work through these in order and most faults resolve before you reach the swing itself.
+      </p>
+      <ol>
+        <li><strong>Alignment.</strong> Lay a club down and check where you are genuinely aimed. Almost nobody aims where they think they do, and a surprising share of swing faults are compensations for bad aim.</li>
+        <li><strong>Grip.</strong> The single biggest influence on whether the face can return to square without manipulation.</li>
+        <li><strong>Ball position and posture.</strong> Cheap to change, and responsible for a large share of fat, thin and topped shots.</li>
+        <li><strong>Path and pivot.</strong> Only once the first three are stable is it worth changing how the club travels.</li>
+      </ol>
+  </div>
+
+  <ChildGrid items={items} heading="Guides in this section" />
+</Pillar>
+
+<style>
+  .pil-prose { max-width: var(--w-prose); }
+  .pil-prose :global(h2) { margin-top: var(--s-7); font-size: var(--fs-xl); }
+  .pil-prose :global(li) { margin-bottom: var(--s-2); }
+  .pil-prose :global(li::marker) { color: var(--brand); }
+  .pil-prose :global(.table-scroll) { max-width: var(--w-content); }
+</style>

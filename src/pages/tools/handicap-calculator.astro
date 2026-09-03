@@ -1,0 +1,303 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ReviewerBadge from '../../components/ReviewerBadge.astro';
+import { faqGraph } from '../../lib/schema';
+
+const title = 'Golf Handicap Calculator';
+const description =
+  'Estimate your handicap index from recent scores using the World Handicap System method, ' +
+  'with every step of the calculation shown so you can see how the number is produced.';
+
+const trail = [
+  { name: 'Home', href: '/' },
+  { name: 'Free Tools', href: '/tools/' },
+  { name: 'Handicap Calculator', href: '/tools/handicap-calculator/' },
+];
+
+/** WHS: how many of the lowest differentials count, and any adjustment, by score count. */
+const WHS_TABLE = [
+  { n: 3,  use: 1, adj: -2.0 },
+  { n: 4,  use: 1, adj: -1.0 },
+  { n: 5,  use: 1, adj: 0 },
+  { n: 6,  use: 2, adj: -1.0 },
+  { n: 8,  use: 2, adj: 0 },
+  { n: 11, use: 3, adj: 0 },
+  { n: 14, use: 4, adj: 0 },
+  { n: 16, use: 5, adj: 0 },
+  { n: 18, use: 6, adj: 0 },
+  { n: 19, use: 7, adj: 0 },
+  { n: 20, use: 8, adj: 0 },
+];
+
+const faqs = [
+  {
+    q: 'How is a handicap index actually calculated?',
+    a: 'Each round is converted into a score differential using the formula (113 divided by the ' +
+       'slope rating) multiplied by (adjusted gross score minus course rating). Your index is ' +
+       'then the average of a set number of your lowest differentials — eight of your last ' +
+       'twenty once you have twenty scores, and fewer when you have fewer rounds.',
+  },
+  {
+    q: 'Why 113?',
+    a: '113 is the slope rating of a course of standard playing difficulty. Dividing by the ' +
+       'actual slope and multiplying by 113 normalises your score so a round on a hard course ' +
+       'and a round on an easy one can be compared fairly.',
+  },
+  {
+    q: 'What is the difference between course rating and slope rating?',
+    a: 'Course rating is the score a scratch golfer is expected to shoot, so it is a number ' +
+       'close to par. Slope rating measures how much harder the course plays for a bogey golfer ' +
+       'than for a scratch golfer, on a scale from 55 to 155 where 113 is average. Course rating ' +
+       'tells you how hard it is; slope tells you how much harder it gets as you get worse.',
+  },
+  {
+    q: 'Is this the same as an official handicap?',
+    a: 'No. This calculator applies the standard method to the scores you enter, but an official ' +
+       'index comes from an authorised golf association using verified scores, and it also ' +
+       'applies adjustments this tool does not model — including net double bogey caps, playing ' +
+       'conditions calculation, and the soft and hard cap on upward movement. Use this as an ' +
+       'estimate, not as a substitute for a real index.',
+  },
+  {
+    q: 'How many scores do I need?',
+    a: 'A minimum of three eighteen-hole scores. With three you take the lowest differential and ' +
+       'subtract 2.0; the adjustment shrinks as you post more rounds and disappears once you ' +
+       'have five. The full method of averaging the best eight starts at twenty scores.',
+  },
+];
+
+const schema = [
+  faqGraph(faqs, '/tools/handicap-calculator/'),
+  {
+    '@type': 'WebApplication',
+    name: title,
+    applicationCategory: 'SportsApplication',
+    operatingSystem: 'Any',
+    description,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  },
+];
+---
+<Base title={title} description={description} schema={schema} trail={trail}>
+  <div class="wrap-c page">
+    <Breadcrumbs trail={trail} />
+    <p class="eyebrow">Free tool</p>
+    <h1>Handicap calculator</h1>
+    <p class="lede">
+      Enter your recent rounds and this estimates a handicap index using the World Handicap
+      System method — and shows you every step, so you can see where the number comes from
+      rather than just receiving it.
+    </p>
+    <ReviewerBadge compact />
+
+    <div class="tool">
+      <div class="rows-head">
+        <span>Adjusted gross score</span>
+        <span>Course rating</span>
+        <span>Slope rating</span>
+        <span class="sr-col">Differential</span>
+        <span></span>
+      </div>
+      <div id="rows"></div>
+
+      <div class="tool-actions">
+        <button type="button" class="btn btn-secondary" id="add">Add a round</button>
+        <button type="button" class="btn btn-ghost" id="demo">Fill with example scores</button>
+      </div>
+
+      <output id="out" class="out" hidden aria-live="polite"></output>
+      <p class="hint" id="hint">Enter at least three rounds to get an estimate.</p>
+    </div>
+
+    <section class="explain">
+      <h2>How the calculation works</h2>
+      <p>Three steps, and the tool shows you all of them.</p>
+      <ol>
+        <li>
+          <strong>Turn each round into a score differential.</strong>
+          <code>(113 &divide; slope) &times; (score &minus; course rating)</code>. This strips out
+          how hard the course was, so a 92 on a brutal layout and an 86 on an easy one become
+          comparable numbers.
+        </li>
+        <li>
+          <strong>Take your lowest differentials.</strong> How many depends on how many rounds you
+          have posted — see the table below. Your handicap reflects your <em>potential</em>, which
+          is why it uses your better rounds rather than your average.
+        </li>
+        <li>
+          <strong>Average them and apply any adjustment.</strong> With fewer than five scores an
+          extra adjustment is subtracted, because a small sample is less reliable.
+        </li>
+      </ol>
+
+      <div class="table-scroll">
+        <table>
+          <caption class="visually-hidden">How many differentials count, by number of scores posted</caption>
+          <thead>
+            <tr><th scope="col">Scores posted</th><th scope="col">Differentials used</th><th scope="col">Adjustment</th></tr>
+          </thead>
+          <tbody>
+            {WHS_TABLE.map((r, i) => {
+              const prev = i === 0 ? 3 : WHS_TABLE[i - 1].n + 1;
+              const label = prev === r.n ? `${r.n}` : `${prev}–${r.n}`;
+              return (
+                <tr>
+                  <th scope="row">{label}</th>
+                  <td>Lowest {r.use}</td>
+                  <td>{r.adj === 0 ? 'None' : r.adj.toFixed(1)}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-warn">
+        <p class="callout-title">What this tool does not do</p>
+        <p>
+          It does not apply net double bogey adjustment to your gross score, the playing
+          conditions calculation, or the soft and hard caps that limit how fast an index can rise.
+          An official index from your golf association will include those. Treat this as a close
+          estimate and a way to understand the method, not as a replacement.
+        </p>
+      </div>
+    </section>
+
+    <section class="faqs">
+      <h2>Common questions</h2>
+      {faqs.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+    </section>
+  </div>
+
+  <script define:vars={{ WHS_TABLE }}>
+    const rowsEl = document.getElementById('rows');
+    const out = document.getElementById('out');
+    const hint = document.getElementById('hint');
+
+    const differential = (score, cr, slope) => (113 / slope) * (score - cr);
+
+    function addRow(v = {}) {
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.innerHTML = `
+        <input type="number" inputmode="numeric" step="1"  aria-label="Adjusted gross score" placeholder="92"    value="${v.s  ?? ''}" data-f="s">
+        <input type="number" inputmode="decimal" step="0.1" aria-label="Course rating"        placeholder="71.2"  value="${v.cr ?? ''}" data-f="cr">
+        <input type="number" inputmode="numeric" step="1"  aria-label="Slope rating"          placeholder="130"   value="${v.sl ?? ''}" data-f="sl">
+        <span class="diff" aria-live="off">—</span>
+        <button type="button" class="rm" aria-label="Remove this round">&times;</button>`;
+      rowsEl.appendChild(row);
+      row.querySelector('.rm').addEventListener('click', () => { row.remove(); calc(); });
+      row.querySelectorAll('input').forEach((i) => i.addEventListener('input', calc));
+    }
+
+    function calc() {
+      const diffs = [];
+      rowsEl.querySelectorAll('.row').forEach((row) => {
+        const g = (f) => parseFloat(row.querySelector(`[data-f="${f}"]`).value);
+        const s = g('s'), cr = g('cr'), sl = g('sl');
+        const cell = row.querySelector('.diff');
+        if (Number.isFinite(s) && Number.isFinite(cr) && Number.isFinite(sl) && sl > 0) {
+          const d = differential(s, cr, sl);
+          cell.textContent = d.toFixed(1);
+          diffs.push(d);
+        } else {
+          cell.textContent = '—';
+        }
+      });
+
+      if (diffs.length < 3) {
+        out.hidden = true;
+        hint.hidden = false;
+        hint.textContent = `Enter at least three complete rounds to get an estimate. ${diffs.length} so far.`;
+        return;
+      }
+      hint.hidden = true;
+
+      // Only the most recent 20 rounds count towards an index.
+      const recent = diffs.slice(-20);
+      const rule = WHS_TABLE.find((r) => recent.length <= r.n) ?? WHS_TABLE[WHS_TABLE.length - 1];
+      const lowest = [...recent].sort((a, b) => a - b).slice(0, rule.use);
+      const avg = lowest.reduce((a, b) => a + b, 0) / lowest.length;
+      const index = avg + rule.adj;
+
+      out.innerHTML = `
+        <p class="o-label">Estimated handicap index</p>
+        <p class="o-big">${index.toFixed(1)}</p>
+        <div class="o-steps">
+          <p><strong>${recent.length}</strong> rounds counted, so the lowest
+             <strong>${rule.use}</strong> differential${rule.use > 1 ? 's are' : ' is'} used.</p>
+          <p>Lowest used: ${lowest.map((d) => d.toFixed(1)).join(', ')}</p>
+          <p>Average: <strong>${avg.toFixed(2)}</strong>${
+            rule.adj !== 0 ? ` &minus; adjustment ${Math.abs(rule.adj).toFixed(1)}` : ''}
+             &rarr; <strong>${index.toFixed(1)}</strong></p>
+        </div>
+        <p class="o-note">An estimate using the standard method. Not an official index —
+          see the caveats below.</p>`;
+      out.hidden = false;
+    }
+
+    document.getElementById('add').addEventListener('click', () => { addRow(); });
+    document.getElementById('demo').addEventListener('click', () => {
+      rowsEl.innerHTML = '';
+      [[94,71.2,131],[89,70.4,124],[97,72.1,138],[91,71.2,131],[88,69.8,120]]
+        .forEach(([s, cr, sl]) => addRow({ s, cr, sl }));
+      calc();
+    });
+
+    for (let i = 0; i < 3; i++) addRow();
+  </script>
+</Base>
+
+<style>
+  .page { padding-block: var(--s-6) var(--s-8); }
+  .lede { font-size: var(--fs-lg); color: var(--text-muted); max-width: 60ch; }
+  .tool { background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r-xl); padding: clamp(1.25rem, 3vw, 2rem);
+    margin-block: var(--s-6) var(--s-8); box-shadow: var(--shadow-sm);
+    max-width: var(--w-content); }
+
+  .rows-head, .tool :global(.row) {
+    display: grid; gap: var(--s-3); align-items: center;
+    grid-template-columns: 1fr 1fr 1fr 5.5rem 2.2rem;
+  }
+  .rows-head { font-size: var(--fs-xs); font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--text-subtle); margin-bottom: var(--s-3); }
+  .tool :global(.row) { margin-bottom: var(--s-3); }
+  .tool :global(.diff) { font-family: var(--font-mono); font-size: var(--fs-sm);
+    color: var(--brand); font-weight: 600; text-align: right; }
+  .tool :global(.rm) { font-size: 1.2rem; line-height: 1; cursor: pointer;
+    width: 2.2rem; height: 2.2rem; padding: 0;
+    background: transparent; color: var(--text-subtle);
+    border: 1px solid var(--border); border-radius: var(--r-md); }
+  .tool :global(.rm:hover) { color: var(--danger); border-color: var(--danger); }
+
+  .tool-actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-4); }
+  .hint { font-size: var(--fs-sm); color: var(--text-subtle); margin: var(--s-4) 0 0; }
+
+  .out { display: block; margin-top: var(--s-5); padding-top: var(--s-5);
+    border-top: 1px solid var(--border); }
+  .out :global(.o-label) { font-size: var(--fs-xs); font-weight: 700; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--brand); margin: 0 0 var(--s-1); }
+  .out :global(.o-big) { font-family: var(--font-display); font-size: var(--fs-4xl);
+    font-weight: 700; line-height: 1; margin: 0 0 var(--s-4); color: var(--text); }
+  .out :global(.o-steps) { background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: var(--r-md); padding: var(--s-4); }
+  .out :global(.o-steps p) { font-size: var(--fs-sm); color: var(--text-muted);
+    margin: 0 0 var(--s-2); }
+  .out :global(.o-steps p:last-child) { margin-bottom: 0; }
+  .out :global(.o-note) { font-size: var(--fs-xs); color: var(--text-subtle);
+    margin: var(--s-3) 0 0; }
+
+  .explain, .faqs { max-width: var(--w-prose); }
+  .explain h2, .faqs h2 { margin-top: var(--s-8); }
+  .explain :global(.table-scroll) { max-width: var(--w-content); }
+  .faqs p { font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.7; margin: 0; }
+
+  @media (max-width: 44rem) {
+    .rows-head { display: none; }
+    .tool :global(.row) { grid-template-columns: 1fr 1fr; gap: var(--s-2);
+      padding-bottom: var(--s-3); border-bottom: 1px solid var(--border); }
+    .tool :global(.diff) { text-align: left; }
+  }
+</style>

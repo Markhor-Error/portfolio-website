@@ -1,0 +1,110 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { REVIEWER, AUTHOR, SITE } from '../../consts';
+
+const title = `${REVIEWER.name} — ${REVIEWER.role}`;
+const description =
+  'Mike Evans is a golf coach with six years of coaching experience who reviews golf ' +
+  'content on Going Eagle for accuracy and practical usefulness before it is published.';
+
+const trail = [
+  { name: 'Home', href: '/' },
+  { name: 'About', href: '/about/' },
+  { name: REVIEWER.name, href: REVIEWER.url },
+];
+
+// The Person node itself is emitted sitewide from organizationGraph(); this page
+// is its canonical URL, so nothing extra is needed here beyond the ProfilePage wrapper.
+const schema = [{
+  '@type': 'ProfilePage',
+  mainEntity: { '@id': new URL(`${REVIEWER.url}#person`, SITE.url).href },
+}];
+---
+<Base title={title} description={description} schema={schema} trail={trail}>
+  <div class="wrap-c page">
+    <Breadcrumbs trail={trail} />
+
+    <header class="bio-head">
+      <span class="avatar" aria-hidden="true">{REVIEWER.initials}</span>
+      <div>
+        <p class="eyebrow">Expert reviewer</p>
+        <h1>{REVIEWER.name}</h1>
+        <p class="role">{REVIEWER.role}</p>
+        <p class="cred-pill"><span class="pill pill-brand">{REVIEWER.credential}</span></p>
+      </div>
+    </header>
+
+    <div class="bio">
+      <h2>About Mike</h2>
+      <p>
+        Mike Evans is an experienced golf coach with six years of hands-on coaching experience,
+        helping golfers develop better technique, make smarter decisions on the course, and build
+        a stronger understanding of the game. That practical coaching experience gives Going
+        Eagle's golf content an additional layer of real-world expertise and scrutiny.
+      </p>
+
+      <h2>How Mike contributes to Going Eagle</h2>
+      <p>
+        Going Eagle's golf articles are researched and written by the
+        <a href={AUTHOR.url}>{AUTHOR.name}</a>, while Mike serves as an expert reviewer. Before
+        publication, Mike reviews relevant golf content for accuracy, practical usefulness, and
+        soundness of the advice. He provides feedback where needed and approves the final content
+        before it goes live.
+      </p>
+      <p>
+        This editorial process lets us combine editorial research and writing with practical golf
+        expertise, so readers can distinguish between general information and advice that has been
+        reviewed by someone with substantial coaching experience.
+      </p>
+
+      <div class="callout callout-key">
+        <p class="callout-title">Reviewer credential</p>
+        <p>Reviewed and approved by Mike Evans, Golf Coach — 6 years of coaching experience.</p>
+      </div>
+
+      <h2>Playing background</h2>
+      <p>
+        Mike has years of practical experience playing and coaching golf. We do not currently
+        publish a specific handicap index, because we do not have a verified handicap figure to
+        substantiate. If that changes, we will publish the figure and say where it came from.
+      </p>
+
+      <h2>Photograph</h2>
+      <p>
+        A genuine photograph of Mike will be added to this profile once available. Going Eagle
+        does not use stock or AI-generated portraits to represent its experts — the monogram above
+        is a placeholder, not a picture of a person.
+      </p>
+
+      <h2>Editorial transparency</h2>
+      <p>
+        We believe credibility comes from being transparent about who writes our content, who
+        reviews it, and what qualifications those reviewers actually hold. Mike's role is
+        therefore presented accurately: the {AUTHOR.name} writes the articles, and Mike Evans
+        independently reviews and approves the golf content before publication.
+      </p>
+      <p>
+        You can read the full process on our <a href="/editorial-policy/">editorial policy</a>
+        page, and how equipment recommendations are formed on
+        <a href="/gear/how-we-test/">how we test</a>.
+      </p>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .page { padding-block: var(--s-6) var(--s-8); }
+  .bio-head { display: flex; gap: var(--s-5); align-items: center; margin-bottom: var(--s-7);
+    padding-bottom: var(--s-6); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  /* Monogram, deliberately not a portrait. See the "Photograph" section. */
+  .avatar { display: grid; place-items: center; flex-shrink: 0;
+    width: 5.5rem; height: 5.5rem; border-radius: var(--r-pill);
+    background: var(--brand); color: var(--brand-ink);
+    font-family: var(--font-display); font-weight: 700; font-size: 1.9rem; }
+  .bio-head h1 { margin-bottom: var(--s-2); }
+  .role { color: var(--text-muted); margin: 0 0 var(--s-3); }
+  .cred-pill { margin: 0; }
+  .bio { max-width: var(--w-prose); }
+  .bio h2 { margin-top: var(--s-7); font-size: var(--fs-xl); }
+</style>

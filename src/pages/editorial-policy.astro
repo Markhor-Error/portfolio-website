@@ -1,0 +1,94 @@
+---
+import Page from '../layouts/Page.astro';
+import { REVIEWER, AUTHOR } from '../consts';
+const trail = [{ name: 'Home', href: '/' }, { name: 'Editorial Policy', href: '/editorial-policy/' }];
+---
+<Page
+  title="Editorial Policy"
+  eyebrow="How this site works"
+  description="Who writes Going Eagle's content, who reviews it, what qualifications those reviewers hold, and the rules we hold ourselves to."
+  intro="Credibility comes from being transparent about who writes the content, who reviews it, and what those people are actually qualified to say. Here is exactly how Going Eagle works."
+  trail={trail}
+>
+  <h2>Who writes, who reviews</h2>
+  <p>
+    Articles on Going Eagle are researched and written by the <strong>{AUTHOR.name}</strong>.
+    Golf content is then reviewed before publication by
+    <a href={REVIEWER.url}>{REVIEWER.name}</a>, a golf coach with six years of coaching
+    experience. Mike checks the advice for accuracy, practical usefulness and soundness,
+    gives feedback where it is needed, and approves the final version before it goes live.
+  </p>
+  <p>
+    We keep those two roles separate and label them separately on every article. Mike is a
+    reviewer, not a bylined author, and we will never present him as having written something
+    he did not write.
+  </p>
+
+  <h2>What the review badge means</h2>
+  <p>
+    When you see <em>“Reviewed by Mike Evans, Golf Coach”</em> on an article, it means that
+    specific article was read and approved by Mike before publication. Pages without that badge
+    have not been through coach review yet — usually because they are reference or
+    administrative pages rather than golf advice.
+  </p>
+
+  <h2>Rules we hold ourselves to</h2>
+  <ul>
+    <li>
+      <strong>No invented credentials.</strong> We publish the qualifications our reviewers
+      actually hold and nothing more. We do not publish a handicap index for Mike because we
+      do not have a verified figure to substantiate.
+    </li>
+    <li>
+      <strong>No stock or AI-generated portraits of real people.</strong> Where we do not yet
+      have a genuine photograph, we use a plain monogram and say so.
+    </li>
+    <li>
+      <strong>No fabricated testing.</strong> If we have not physically tested a product, the
+      page says the recommendation is research-based. See <a href="/gear/how-we-test/">how we test</a>.
+    </li>
+    <li>
+      <strong>No invented statistics.</strong> Where we cite a figure we say where it came from.
+      Where a reliable figure does not exist, we say that instead of estimating one.
+    </li>
+    <li>
+      <strong>Commission never changes a ranking.</strong> If the product paying us less is the
+      better product, it is listed first. See our <a href="/affiliate-disclosure/">affiliate disclosure</a>.
+    </li>
+    <li>
+      <strong>Illustrations are labelled.</strong> Diagrams and illustrative images are our own.
+      We never present an illustration as a photograph of a real product or event.
+    </li>
+  </ul>
+
+  <h2>Keeping content current</h2>
+  <p>
+    Golf advice ages at different speeds. A definition of a stroke index will be true in ten
+    years; a list of the best launch monitors will be wrong within one. Every page on this site
+    is assigned a review schedule when it is written:
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr><th scope="col">Type of content</th><th scope="col">Reviewed every</th><th scope="col">Examples</th></tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row">Fast-moving</th><td>3 months</td><td>Product recommendations, prices, rankings, rules changes</td></tr>
+        <tr><th scope="row">Moderate</th><td>6 months</td><td>Comparisons, buying guides, anything tied to a specific tool</td></tr>
+        <tr><th scope="row">Stable</th><td>12 months</td><td>Definitions, technique fundamentals, background explanations</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    We change the “last updated” date on an article only when the content genuinely changed.
+    Refreshing a date to look current, without touching the substance, is a practice we will
+    not use.
+  </p>
+
+  <h2>Corrections</h2>
+  <p>
+    If something here is wrong, we want to know. Tell us through the
+    <a href="/contact/">contact page</a> and we will correct it. Substantive corrections are
+    noted on the page itself rather than quietly edited away.
+  </p>
+</Page>

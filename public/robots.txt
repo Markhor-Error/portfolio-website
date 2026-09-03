@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Utility endpoints carry no search value.
+Disallow: /search/
+Disallow: /thanks/
+
+Sitemap: https://lawngreen-donkey-777239.hostingersite.com/sitemap-index.xml

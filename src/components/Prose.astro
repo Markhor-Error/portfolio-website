@@ -1,0 +1,30 @@
+---
+/* Article typography. Scoped here so long-form pages read well without every
+   page re-declaring measure, rhythm and heading spacing. */
+---
+<div class="prose"><slot /></div>
+<style is:global>
+  .prose { max-width: var(--w-prose); }
+  .prose > * { margin-inline: auto; }
+  .prose h2 { margin-top: var(--s-8); scroll-margin-top: calc(var(--header-h) + 1rem); }
+  .prose h3 { margin-top: var(--s-6); scroll-margin-top: calc(var(--header-h) + 1rem); }
+  .prose h2 + p, .prose h3 + p { margin-top: 0; }
+  .prose li { margin-bottom: var(--s-2); }
+  .prose ul, .prose ol { padding-left: 1.35em; }
+  .prose li::marker { color: var(--brand); }
+  .prose blockquote {
+    border-left: 3px solid var(--brand-border);
+    padding-left: var(--s-5); margin-left: 0;
+    color: var(--text-muted); font-style: italic;
+  }
+  .prose .lead {
+    font-size: var(--fs-lg); line-height: 1.6; color: var(--text-muted);
+  }
+  .prose figure { margin-inline: 0; }
+  .prose figcaption {
+    font-size: var(--fs-xs); color: var(--text-subtle);
+    margin-top: var(--s-2); text-align: center;
+  }
+  /* Wide elements break the reading measure deliberately. */
+  .prose .table-scroll, .prose .full { max-width: var(--w-content); }
+</style>
