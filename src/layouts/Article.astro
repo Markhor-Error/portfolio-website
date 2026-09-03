@@ -55,9 +55,11 @@ const dateLabel = (d: string) =>
       <h1>{title}</h1>
       <p class="art-dates meta">
         Published <time datetime={published}>{dateLabel(published)}</time>
-        {updated && <> · Updated <time datetime={updated}>{dateLabel(updated)}</time></>}
+        {updated && updated !== published && (
+          <> · Updated <time datetime={updated}>{dateLabel(updated)}</time></>
+        )}
       </p>
-      <ReviewerBadge updated={updated} reviewed={reviewed} />
+      <ReviewerBadge reviewed={reviewed} />
     </header>
 
     {answer && (
