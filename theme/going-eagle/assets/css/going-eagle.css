@@ -28,6 +28,9 @@
   --ge-accent-soft: #fbf3e2;
   --ge-accent-border: #e6cf9c;
 
+  --ge-warn: #8a5a06;
+  --ge-warn-soft: #fdf1dc;
+
   --ge-surface: #ffffff;
   --ge-surface-2: #f4f2ec;
   --ge-text: #15211d;
@@ -56,6 +59,9 @@
     --ge-accent: #dfa84c;
     --ge-accent-soft: #2b2416;
     --ge-accent-border: #5c4a22;
+
+    --ge-warn: #e0ae5b;
+    --ge-warn-soft: #2b2315;
     --ge-surface: #141d19;
     --ge-surface-2: #1b2622;
     --ge-text: #eaf1ed;
@@ -336,3 +342,229 @@
   .ge-row__diff { text-align: left; }
   .ge-opts { grid-template-columns: 1fr; }
 }
+
+/* ---------------------------------------------------------------------------
+   Simulator space and budget planner  [ge_sim_budget]
+   Mirrors /tools/simulator-budget/ on the Astro preview site.
+   --------------------------------------------------------------------------- */
+
+.ge-grp { border: 0; margin: 0 0 1.75rem; padding: 0; }
+.ge-grp:last-of-type { margin-bottom: 0; }
+.ge-grp legend {
+	display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
+	font-size: 1.05rem; font-weight: 600; margin-bottom: .75rem; padding: 0;
+}
+.ge-grp__note {
+	font-size: .9rem; color: var(--ge-muted); max-width: 62ch; margin: 0 0 .85rem;
+	line-height: 1.6;
+}
+
+.ge-units { display: flex; gap: 1rem; margin-bottom: 1rem; }
+.ge-units label { display: inline-flex; align-items: center; gap: .5rem; margin: 0; font-size: .9rem; cursor: pointer; }
+.ge-units input { width: auto; margin: 0; accent-color: var(--ge-brand); }
+
+.ge-fields { display: grid; gap: .85rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
+.ge-f { margin: 0; display: flex; flex-direction: column; gap: .35rem; }
+.ge-f--wide { grid-column: 1 / -1; }
+.ge-f--narrow { max-width: 8rem; }
+.ge-f label { font-size: .9rem; font-weight: 600; line-height: 1.35; }
+.ge-f label span { display: block; font-weight: 400; font-size: .78rem; color: var(--ge-subtle); }
+.ge-f input, .ge-f select {
+	width: 100%; padding: .55rem .7rem; font: inherit; font-size: .9rem;
+	color: var(--ge-text); background: var(--ge-surface-2);
+	border: 1px solid var(--ge-border-strong); border-radius: .4rem;
+}
+.ge-f input:focus, .ge-f select:focus { border-color: var(--ge-brand); outline: none; }
+
+.ge-builds { display: grid; gap: .75rem; margin-bottom: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
+.ge-build {
+	display: flex; gap: .75rem; align-items: flex-start; margin: 0; cursor: pointer;
+	padding: .75rem 1rem; border: 1px solid var(--ge-border); border-radius: .5rem;
+	background: var(--ge-surface-2);
+}
+.ge-build:has(input:checked) { border-color: var(--ge-brand); background: var(--ge-brand-soft); }
+.ge-build input { width: auto; margin: .25rem 0 0; accent-color: var(--ge-brand); flex: none; }
+.ge-build strong { display: block; font-size: .9rem; }
+.ge-build em { display: block; font-style: normal; font-size: .78rem; color: var(--ge-muted); line-height: 1.5; margin-top: .2em; }
+
+.ge-result { display: block; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--ge-border); }
+.ge-result h3 { font-size: 1.05rem; margin: 1.25rem 0 .75rem; }
+.ge-result h3:first-child { margin-top: 0; }
+
+.ge-vrows { display: grid; gap: .5rem; }
+.ge-vrow {
+	display: grid; gap: .15rem .75rem; align-items: baseline; grid-template-columns: auto 1fr;
+	padding: .75rem 1rem; border: 1px solid var(--ge-border); border-left-width: 3px;
+	border-radius: .4rem; background: var(--ge-surface-2);
+}
+.ge-vchip { font-size: .72rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
+.ge-vname { font-weight: 600; font-size: .9rem; }
+.ge-vdetail { grid-column: 1 / -1; font-size: .9rem; color: var(--ge-muted); line-height: 1.6; }
+.ge-vrow.is-clear { border-left-color: var(--ge-brand); }
+.ge-vrow.is-clear .ge-vchip { color: var(--ge-brand); }
+.ge-vrow.is-tight { border-left-color: var(--ge-accent); background: var(--ge-accent-soft); }
+.ge-vrow.is-tight .ge-vchip { color: var(--ge-accent); }
+.ge-vrow.is-short { border-left-color: #a12a20; background: var(--ge-surface-2); }
+.ge-vrow.is-short .ge-vchip { color: #a12a20; }
+
+.ge-alloc { display: grid; gap: 1.15rem; }
+.ge-arow { display: grid; gap: .4rem; }
+.ge-ahead { display: flex; justify-content: space-between; gap: .75rem; align-items: baseline; flex-wrap: wrap; }
+.ge-aname { font-weight: 600; font-size: .9rem; }
+.ge-aamt { font-size: 1rem; font-weight: 600; white-space: nowrap; }
+.ge-aamt em { font-style: normal; font-size: .78rem; font-weight: 400; color: var(--ge-subtle); margin-left: .5em; }
+.ge-abar { height: 6px; border-radius: 999px; background: var(--ge-surface-2); overflow: hidden; }
+.ge-abar i { display: block; height: 100%; background: var(--ge-brand); border-radius: 999px; }
+.ge-awhy { margin: 0; font-size: .9rem; color: var(--ge-muted); line-height: 1.6; max-width: 68ch; }
+
+.ge-disclaim {
+	margin: 1.25rem 0 0; padding: 1rem; font-size: .9rem; line-height: 1.6;
+	color: var(--ge-muted); background: var(--ge-surface-2); border-radius: .4rem; max-width: 68ch;
+}
+.ge-warns { margin: 0; padding-left: 1.2em; max-width: 68ch; }
+.ge-warns li { margin-bottom: .5rem; font-size: .9rem; line-height: 1.6; color: var(--ge-muted); }
+
+/* ---------------------------------------------------------------------------
+   Article content blocks — callouts, the answer-first box, and wide tables.
+   Kadence handles page chrome and base typography; these are the custom
+   classes the Markdown source and rehypeWrapTables (astro.config.mjs) emit,
+   ported so drafted content doesn't render unstyled once imported.
+   --------------------------------------------------------------------------- */
+
+.ge-content .callout {
+  border: 1px solid var(--ge-border);
+  border-left: 3px solid var(--ge-brand);
+  background: var(--ge-surface-2);
+  border-radius: var(--ge-r-md);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+}
+.ge-content .callout > :last-child { margin-bottom: 0; }
+.ge-content .callout-title {
+  font-weight: 700; font-size: .9rem; letter-spacing: .02em;
+  margin: 0 0 .5rem; color: var(--ge-text);
+}
+.ge-content .callout-key  { border-left-color: var(--ge-accent); background: var(--ge-accent-soft); }
+.ge-content .callout-warn { border-left-color: var(--ge-warn);   background: var(--ge-warn-soft); }
+
+/* Answer-first block, from Article.astro's <div class="answer">. Not currently
+   emitted by any drafted article (all use the FAQ block instead), but the class
+   is part of the content model, so it is styled here rather than left to rot
+   unstyled the day it is used. */
+.ge-content .answer {
+  background: var(--ge-brand-soft); border: 1px solid var(--ge-brand-border);
+  border-left: 3px solid var(--ge-brand); border-radius: var(--ge-r-lg);
+  padding: 1rem 1.25rem; margin: 1.5rem 0;
+}
+.ge-content .answer-label {
+  font-size: .78rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--ge-brand); margin: 0 0 .5rem;
+}
+.ge-content .answer-text { margin: 0; color: var(--ge-text); }
+
+/* Tables must scroll inside their own box, never the page. */
+.ge-content .table-scroll {
+  overflow-x: auto; margin-block: 1.5rem; border-radius: var(--ge-r-md);
+  border: 1px solid var(--ge-border);
+}
+.ge-content .table-scroll table { margin: 0; }
+
+/* ---------------------------------------------------------------------------
+   Homepage  (page-templates/homepage.php)
+   Everything here is scoped under .ge-home so it cannot collide with Kadence's
+   own generic class names (.card, .grid, .btn etc. are common enough that reusing
+   them bare would be reckless in a child theme that doesn't own that markup).
+   Deliberately does not set font-family — Kadence's own typography settings carry
+   through, exactly as the rest of this theme already assumes for articles/tools.
+   --------------------------------------------------------------------------- */
+
+.ge-home { color: var(--ge-text); }
+.ge-home-wrap { max-width: 74rem; margin-inline: auto; padding-inline: clamp(1rem, 4vw, 2.5rem); }
+.ge-home-section { padding-block: clamp(2.5rem, 6vw, 4rem); }
+.ge-home-eyebrow {
+	font-size: .78rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+	color: var(--ge-brand); margin: 0 0 .75rem;
+}
+.ge-home-sec-title { margin: 0 0 1.5rem; }
+
+/* Hero */
+.ge-home-hero {
+	padding-block: clamp(3rem, 8vw, 6rem) clamp(2.5rem, 6vw, 4.5rem);
+	background:
+		radial-gradient(60rem 30rem at 12% -10%, var(--ge-brand-soft), transparent 62%),
+		radial-gradient(46rem 26rem at 92% 8%, var(--ge-accent-soft), transparent 60%);
+	border-bottom: 1px solid var(--ge-border);
+}
+.ge-home-hero .ge-home-wrap { max-width: 54rem; margin-inline: 0; }
+.ge-home-h1 { font-size: clamp(2rem, 4.5vw, 3rem); line-height: 1.15; margin: 0 0 1.25rem; }
+.ge-home-lead {
+	font-size: 1.15rem; color: var(--ge-muted); max-width: 46rem; line-height: 1.6;
+	margin: 0 0 1.5rem;
+}
+.ge-home-lead em { color: var(--ge-text); font-style: italic; }
+.ge-home-cta-row { display: flex; flex-wrap: wrap; gap: .85rem; margin-bottom: 1.25rem; }
+.ge-home-trust-line { font-size: .82rem; color: var(--ge-subtle); margin: 0; }
+
+.ge-home-btn {
+	display: inline-flex; align-items: center; justify-content: center;
+	padding: .8em 1.5em; border-radius: var(--ge-r-pill); font-weight: 600;
+	font-size: .95rem; text-decoration: none; border: 1px solid transparent;
+	transition: transform .15s ease, box-shadow .15s ease;
+}
+.ge-home-btn--primary { background: var(--ge-brand); color: var(--ge-brand-ink); }
+.ge-home-btn--primary:hover { background: var(--ge-brand-hover); transform: translateY(-1px); }
+.ge-home-btn--secondary { background: var(--ge-surface); color: var(--ge-text); border-color: var(--ge-border-strong); }
+.ge-home-btn--secondary:hover { border-color: var(--ge-brand); color: var(--ge-brand); }
+
+/* Grids and cards */
+.ge-home-grid { display: grid; gap: 1.25rem; }
+.ge-home-grid--3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
+.ge-home-cluster-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
+.ge-home-trust-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); }
+
+.ge-home-card {
+	display: flex; flex-direction: column; height: 100%;
+	background: var(--ge-surface); border: 1px solid var(--ge-border);
+	border-radius: var(--ge-r-lg); padding: 1.5rem;
+	text-decoration: none; color: inherit;
+	transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+}
+.ge-home-card:hover { border-color: var(--ge-brand); transform: translateY(-2px); box-shadow: var(--ge-shadow-sm); }
+.ge-home-card h3 { margin: 0 0 .5rem; }
+.ge-home-card p { margin: 0; color: var(--ge-muted); font-size: .92rem; line-height: 1.6; }
+.ge-home-path { justify-content: space-between; }
+.ge-home-path p:not(.ge-home-eyebrow) { flex: 1; }
+.ge-home-path-cta { margin-top: 1rem; font-size: .9rem; font-weight: 600; color: var(--ge-brand); }
+
+/* Tools band */
+.ge-home-tools-band { background: var(--ge-surface-2); border-block: 1px solid var(--ge-border); }
+.ge-home-band-head {
+	display: flex; gap: 1.5rem; justify-content: space-between; align-items: flex-end;
+	flex-wrap: wrap; margin-bottom: 1.5rem;
+}
+.ge-home-band-head .ge-home-sec-title { margin-bottom: .5rem; }
+.ge-home-band-sub { color: var(--ge-muted); font-size: .9rem; max-width: 52ch; margin: 0; }
+
+.ge-home-tool-list {
+	list-style: none; margin: 0; padding: 0; display: grid; gap: .85rem;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 13.5rem), 1fr));
+}
+.ge-home-tool-list a {
+	display: flex; flex-direction: column; gap: .25rem; height: 100%;
+	background: var(--ge-surface); border: 1px solid var(--ge-border);
+	border-radius: var(--ge-r-md); padding: 1rem;
+	text-decoration: none; color: inherit;
+	transition: border-color .15s ease, transform .15s ease;
+}
+.ge-home-tool-list a:hover { border-color: var(--ge-brand); transform: translateY(-2px); }
+.ge-home-tool-list strong { font-size: .9rem; color: var(--ge-text); }
+.ge-home-tool-list span { font-size: .8rem; color: var(--ge-muted); line-height: 1.5; }
+
+/* Trust panel */
+.ge-home-trust {
+	background: var(--ge-surface); border: 1px solid var(--ge-border);
+	border-radius: var(--ge-r-xl); padding: clamp(1.5rem, 4vw, 3rem);
+}
+.ge-home-trust > h2 { margin: 0 0 1.5rem; }
+.ge-home-trust-grid h3 { font-size: 1rem; font-weight: 700; margin: 0 0 .5rem; }
+.ge-home-trust-grid p { font-size: .9rem; color: var(--ge-muted); margin: 0; line-height: 1.65; }

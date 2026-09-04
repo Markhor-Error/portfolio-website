@@ -1,11 +1,19 @@
 ---
 import type { Heading } from '../lib/toc';
-interface Props { headings: Heading[] }
-const { headings } = Astro.props;
+
+/**
+ * Two variants of the same list. `rail` lives in the sidebar on wide screens;
+ * `inline` sits in the article flow on narrow ones. Exactly one is displayed at any
+ * width — see the media queries below — so the duplicate never reaches the
+ * accessibility tree twice, and the ids differ so the document stays valid.
+ */
+interface Props { headings: Heading[]; variant?: 'inline' | 'rail' }
+const { headings, variant = 'inline' } = Astro.props;
+const id = `toc-h-${variant}`;
 ---
 {headings.length > 2 && (
-  <nav class="toc" aria-labelledby="toc-h">
-    <h2 id="toc-h">On this page</h2>
+  <nav class:list={['toc', `toc-${variant}`]} aria-labelledby={id}>
+    <h2 id={id}>On this page</h2>
     <ol>
       {headings.map((h) => (
         <li class={h.depth === 3 ? 'sub' : ''}><a href={`#${h.slug}`}>{h.text}</a></li>
@@ -30,4 +38,18 @@ const { headings } = Astro.props;
   .toc li.sub { padding-left: var(--s-5); }
   .toc a { font-size: var(--fs-sm); color: var(--text-muted); text-decoration: none; }
   .toc a:hover { color: var(--brand); text-decoration: underline; }
+
+  /* Only one variant is ever shown. 68rem is where the sidebar gains enough width
+     to sit beside the reading measure without squeezing it. */
+  .toc-rail { display: none; }
+  @media (min-width: 68rem) {
+    .toc-inline { display: none; }
+    .toc-rail {
+      display: block; margin-block: 0;
+      background: var(--surface); border-radius: var(--r-lg);
+    }
+    /* The one part of the rail that grows without bound. */
+    .toc-rail ol { max-height: 38vh; overflow-y: auto; scrollbar-width: thin; }
+    .toc-rail li.sub { padding-left: var(--s-4); }
+  }
 </style>

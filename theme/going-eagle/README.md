@@ -12,7 +12,9 @@ deliberately small. It adds only what Kadence cannot know about:
 | `inc/reviewer.php` | Editorial byline. Written by the team, reviewed by Mike. |
 | `inc/schema.php` | Structured data, including the reviewer relationship. |
 | `inc/tools.php` | The calculators, as shortcodes. |
-| `assets/css/going-eagle.css` | Brand tokens and component styles. |
+| `page-templates/homepage.php` | The homepage. A direct port of the Astro reference (`src/pages/index.astro`) — see below. |
+| `inc/setup.php` | One-click setup: assigns the homepage template as the front page and mints an Application Password. Tools > Going Eagle Setup. |
+| `assets/css/going-eagle.css` | Brand tokens, component styles, and everything the homepage needs, under a `.ge-home-*` prefix. |
 | `assets/js/*` | Tool behaviour. No dependencies, no network, no storage. |
 
 ## Install
@@ -30,10 +32,41 @@ deliberately small. It adds only what Kadence cannot know about:
 | `[ge_byline]` | Byline block. Add `compact="true"` for the small variant. Auto-prepended to single posts unless the shortcode is present in the content. |
 | `[ge_ball_flight]` | Ball flight diagnostic. |
 | `[ge_handicap]` | Handicap index calculator. |
+| `[ge_sim_budget]` | Simulator space check and budget split. Publishes no prices — it splits the reader's own budget. |
 | `[ge_faq]…[/ge_faq]` | FAQ accordion that also emits `FAQPage` schema. |
 | `[ge_q question="…"]answer[/ge_q]` | One FAQ entry. Must sit inside `[ge_faq]`. |
 
 Tool scripts load only on pages whose content contains the matching shortcode.
+
+## Homepage
+
+`page-templates/homepage.php` is a Page Template — WordPress finds it automatically
+because of the `Template Name:` header comment, no registration code needed.
+
+The fastest way to turn it on: **Tools → Going Eagle Setup → Run setup.** One click
+creates the Home page, assigns this template, and sets it as the site's static front
+page — see `inc/setup.php`. The manual alternative (Page Attributes > Template, then
+Settings > Reading > Front page) still works if preferred.
+
+All content and every class name live inside the template file and are namespaced
+`.ge-home-*`, so nothing here can collide with Kadence's own generic class names
+(`.card`, `.grid`, `.btn` and similar are common enough that this child theme should
+never assume it owns them).
+
+One thing the setup screen does *not* attempt: Kadence's own page-title bar may still
+print above the hero, since suppressing it is a per-page toggle stored under a Kadence
+meta key this repo has no access to (Kadence Pro is licensed, not part of this
+codebase). Cosmetic only — if it bothers you, Kadence's own page-settings panel for
+the Home page has a "Display Title" toggle to turn off by hand.
+
+## Application Passwords (`inc/setup.php`)
+
+The same screen mints a fresh **Application Password** — the credential WordPress's
+REST API actually accepts (a regular account password does not authenticate against
+`/wp-json/`, by WordPress's own design). Copy it the moment it's shown; WordPress will
+not display it again. Revoke any of them any time from **Users → your profile →
+Application Passwords** with no side effects beyond that one credential stopping
+working.
 
 ## The reviewer model — please do not "simplify" this
 

@@ -84,6 +84,47 @@ export const clusterById = (id: ClusterId): Cluster =>
   CLUSTERS.find((c) => c.id === id)!;
 
 /**
+ * The tool each cluster sends readers to from the article sidebar.
+ *
+ * Only built tools appear here — the same rule as NAV's `ready` gate, for the same
+ * reason. Add an entry in the commit that ships the tool, not before.
+ */
+export interface ClusterTool { name: string; href: string; pitch: string }
+
+export const CLUSTER_TOOL: Partial<Record<ClusterId, ClusterTool>> = {
+  fixes: {
+    name: 'Ball Flight Diagnostic',
+    href: '/tools/ball-flight-diagnostic/',
+    pitch: 'Describe the shot you keep hitting and work backwards to the impact conditions causing it.',
+  },
+  'short-game': {
+    name: 'Ball Flight Diagnostic',
+    href: '/tools/ball-flight-diagnostic/',
+    pitch: 'Strike faults show up around the green first. Find which one is yours.',
+  },
+  scoring: {
+    name: 'Handicap Calculator',
+    href: '/tools/handicap-calculator/',
+    pitch: 'Work out an index from your recent scores, with every step of the calculation shown.',
+  },
+  gear: {
+    name: 'Ball Flight Diagnostic',
+    href: '/tools/ball-flight-diagnostic/',
+    pitch: 'Before you buy anything, find out whether the fault is the club or the swing.',
+  },
+  'home-golf': {
+    name: 'Simulator Space and Budget Planner',
+    href: '/tools/simulator-budget/',
+    pitch: 'Check whether your room can host a simulator, then split your budget across the components.',
+  },
+  basics: {
+    name: 'Handicap Calculator',
+    href: '/tools/handicap-calculator/',
+    pitch: 'See how an index is actually produced, one differential at a time.',
+  },
+};
+
+/**
  * Mega-menu panels. Four triggers keeps the bar usable while every pillar keeps a
  * sitewide link.
  *
@@ -99,14 +140,14 @@ const NAV_ALL: NavGroup[] = [
     children: [
       { label: 'Swing Fixes', href: '/fixes/', ready: true },
       { label: 'Fix a Slice', href: '/fixes/slice/', ready: true },
-      { label: 'Fix a Hook', href: '/fixes/hook/' },
+      { label: 'Fix a Hook', href: '/fixes/hook/', ready: true },
       { label: 'Cure the Shanks', href: '/fixes/shank/' },
       { label: 'Short Game', href: '/short-game/', ready: true },
-      { label: 'Chipping', href: '/short-game/chipping/' },
+      { label: 'Chipping', href: '/short-game/chipping/', ready: true },
       { label: 'Putting', href: '/short-game/putting/' },
       { label: 'Scoring', href: '/scoring/', ready: true },
-      { label: 'Break 100', href: '/scoring/break-100/' },
-      { label: 'Break 90', href: '/scoring/break-90/' },
+      { label: 'Break 100', href: '/scoring/break-100/', ready: true },
+      { label: 'Break 90', href: '/scoring/break-90/', ready: true },
       { label: 'Break 80', href: '/scoring/break-80/' },
       { label: 'Course Management', href: '/scoring/course-management/' },
     ],
@@ -121,8 +162,9 @@ const NAV_ALL: NavGroup[] = [
       { label: 'Putters', href: '/gear/putters/' },
       { label: 'Rangefinders', href: '/gear/rangefinders/' },
       { label: 'Home Golf', href: '/home-golf/', ready: true },
-      { label: 'Golf Simulators', href: '/home-golf/simulators/' },
-      { label: 'Launch Monitors', href: '/home-golf/launch-monitors/' },
+      { label: 'Build a Simulator', href: '/home-golf/simulators/', ready: true },
+      { label: 'Launch Monitors', href: '/home-golf/launch-monitors/', ready: true },
+      { label: 'Simulator Costs', href: '/home-golf/simulator-cost/', ready: true },
       { label: 'How We Test', href: '/gear/how-we-test/', ready: true },
     ],
   },
@@ -134,7 +176,7 @@ const NAV_ALL: NavGroup[] = [
       { label: 'Handicap Calculator', href: '/tools/handicap-calculator/', ready: true },
       { label: 'Scoring Benchmark', href: '/tools/scoring-benchmark/' },
       { label: 'Wedge Gapping', href: '/tools/wedge-gapping/' },
-      { label: 'Simulator Budget', href: '/tools/simulator-budget/' },
+      { label: 'Simulator Budget', href: '/tools/simulator-budget/', ready: true },
     ],
   },
   {

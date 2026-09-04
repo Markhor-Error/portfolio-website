@@ -1,20 +1,34 @@
 ---
 import { REVIEWER, AUTHOR } from '../consts';
-interface Props { compact?: boolean; updated?: string }
-const { compact = false, updated } = Astro.props;
+
+/**
+ * Reviewer status is per-page and opt-in, exactly as it is in the WordPress theme
+ * (going_eagle_is_reviewed()). `reviewed` defaults to false and must never be
+ * defaulted true or set in bulk: claiming a coach signed off on a page he has not
+ * read is a false credential, and it would contradict the page's own schema, which
+ * only emits reviewedBy when the review actually happened.
+ */
+interface Props { compact?: boolean; updated?: string; reviewed?: boolean }
+const { compact = false, updated, reviewed = false } = Astro.props;
 ---
-<div class:list={['rev', compact && 'rev-compact']}>
-  <span class="rev-avatar" aria-hidden="true">{REVIEWER.initials}</span>
+<div class:list={['rev', compact && 'rev-compact', !reviewed && 'rev-unreviewed']}>
+  <span class="rev-avatar" aria-hidden="true">{reviewed ? REVIEWER.initials : 'GE'}</span>
   <div class="rev-body">
     <p class="rev-line">
-      Written by <a href={AUTHOR.url}>{AUTHOR.name}</a> ·
-      Reviewed by <a href={REVIEWER.url}><strong>{REVIEWER.name}</strong></a>,
-      <span class="rev-cred">{REVIEWER.credential}</span>
+      Written by <a href={AUTHOR.url}>{AUTHOR.name}</a>
+      {reviewed && (
+        <>
+          · Reviewed by <a href={REVIEWER.url}><strong>{REVIEWER.name}</strong></a>,
+          <span class="rev-cred">{REVIEWER.credential}</span>
+        </>
+      )}
     </p>
     {!compact && (
       <p class="rev-note">
-        Mike reads golf articles before publication and checks the advice is accurate and
-        genuinely useful. <a href="/editorial-policy/">How our review process works</a>.
+        {reviewed
+          ? 'Mike reads golf articles before publication and checks the advice is accurate and genuinely useful.'
+          : 'This page has not yet been through coach review.'}
+        {' '}<a href="/editorial-policy/">How our review process works</a>.
         {updated && <> · Last updated <time datetime={updated}>{updated}</time></>}
       </p>
     )}
@@ -37,6 +51,9 @@ const { compact = false, updated } = Astro.props;
     font-family: var(--font-display); font-weight: 700; font-size: .9rem;
     letter-spacing: .02em;
   }
+  /* An unreviewed page shows the site monogram, not the reviewer's initials. */
+  .rev-unreviewed .rev-avatar { background: var(--surface); color: var(--text-subtle);
+    border: 1px solid var(--border-strong); }
   .rev-body { min-width: 0; }
   .rev-line { margin: 0; font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.55; }
   .rev-line strong { color: var(--text); }

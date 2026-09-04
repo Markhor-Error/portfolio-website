@@ -25,6 +25,10 @@
     font-size: var(--fs-xs); color: var(--text-subtle);
     margin-top: var(--s-2); text-align: center;
   }
-  /* Wide elements break the reading measure deliberately. */
-  .prose .table-scroll, .prose .full { max-width: var(--w-content); }
+  /* Wide elements break the reading measure deliberately, but never the viewport.
+     `min()` is what stops .table-scroll pushing the page sideways inside the
+     narrower article column. */
+  .prose .table-scroll, .prose .full { max-width: min(100%, var(--w-content)); }
+  /* Fenced code blocks are pre-formatted, so they can only scroll, never wrap. */
+  .prose pre { max-width: 100%; overflow-x: auto; }
 </style>
