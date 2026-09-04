@@ -12,7 +12,8 @@ deliberately small. It adds only what Kadence cannot know about:
 | `inc/reviewer.php` | Editorial byline. Written by the team, reviewed by Mike. |
 | `inc/schema.php` | Structured data, including the reviewer relationship. |
 | `inc/tools.php` | The calculators, as shortcodes. |
-| `assets/css/going-eagle.css` | Brand tokens and component styles. |
+| `page-templates/homepage.php` | The homepage. A direct port of the Astro reference (`src/pages/index.astro`) — see below. |
+| `assets/css/going-eagle.css` | Brand tokens, component styles, and everything the homepage needs, under a `.ge-home-*` prefix. |
 | `assets/js/*` | Tool behaviour. No dependencies, no network, no storage. |
 
 ## Install
@@ -35,6 +36,23 @@ deliberately small. It adds only what Kadence cannot know about:
 | `[ge_q question="…"]answer[/ge_q]` | One FAQ entry. Must sit inside `[ge_faq]`. |
 
 Tool scripts load only on pages whose content contains the matching shortcode.
+
+## Homepage
+
+`page-templates/homepage.php` is a Page Template — WordPress finds it automatically
+because of the `Template Name:` header comment, no registration code needed. To use it:
+
+1. Create a Page (title it "Home" or similar).
+2. In the editor's **Page Attributes** panel, set **Template** to "Going Eagle — Homepage".
+3. In Kadence's own page-settings panel for that page, turn off **Display Title** —
+   Kadence would otherwise print the page title above the hero.
+4. Publish, then go to **Settings → Reading** and set that page as the static
+   **Front page**.
+
+All content and every class name live inside the template file and are namespaced
+`.ge-home-*`, so nothing here can collide with Kadence's own generic class names
+(`.card`, `.grid`, `.btn` and similar are common enough that this child theme should
+never assume it owns them).
 
 ## The reviewer model — please do not "simplify" this
 
