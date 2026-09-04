@@ -28,6 +28,9 @@
   --ge-accent-soft: #fbf3e2;
   --ge-accent-border: #e6cf9c;
 
+  --ge-warn: #8a5a06;
+  --ge-warn-soft: #fdf1dc;
+
   --ge-surface: #ffffff;
   --ge-surface-2: #f4f2ec;
   --ge-text: #15211d;
@@ -56,6 +59,9 @@
     --ge-accent: #dfa84c;
     --ge-accent-soft: #2b2416;
     --ge-accent-border: #5c4a22;
+
+    --ge-warn: #e0ae5b;
+    --ge-warn-soft: #2b2315;
     --ge-surface: #141d19;
     --ge-surface-2: #1b2622;
     --ge-text: #eaf1ed;
@@ -417,3 +423,48 @@
 }
 .ge-warns { margin: 0; padding-left: 1.2em; max-width: 68ch; }
 .ge-warns li { margin-bottom: .5rem; font-size: .9rem; line-height: 1.6; color: var(--ge-muted); }
+
+/* ---------------------------------------------------------------------------
+   Article content blocks — callouts, the answer-first box, and wide tables.
+   Kadence handles page chrome and base typography; these are the custom
+   classes the Markdown source and rehypeWrapTables (astro.config.mjs) emit,
+   ported so drafted content doesn't render unstyled once imported.
+   --------------------------------------------------------------------------- */
+
+.ge-content .callout {
+  border: 1px solid var(--ge-border);
+  border-left: 3px solid var(--ge-brand);
+  background: var(--ge-surface-2);
+  border-radius: var(--ge-r-md);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+}
+.ge-content .callout > :last-child { margin-bottom: 0; }
+.ge-content .callout-title {
+  font-weight: 700; font-size: .9rem; letter-spacing: .02em;
+  margin: 0 0 .5rem; color: var(--ge-text);
+}
+.ge-content .callout-key  { border-left-color: var(--ge-accent); background: var(--ge-accent-soft); }
+.ge-content .callout-warn { border-left-color: var(--ge-warn);   background: var(--ge-warn-soft); }
+
+/* Answer-first block, from Article.astro's <div class="answer">. Not currently
+   emitted by any drafted article (all use the FAQ block instead), but the class
+   is part of the content model, so it is styled here rather than left to rot
+   unstyled the day it is used. */
+.ge-content .answer {
+  background: var(--ge-brand-soft); border: 1px solid var(--ge-brand-border);
+  border-left: 3px solid var(--ge-brand); border-radius: var(--ge-r-lg);
+  padding: 1rem 1.25rem; margin: 1.5rem 0;
+}
+.ge-content .answer-label {
+  font-size: .78rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--ge-brand); margin: 0 0 .5rem;
+}
+.ge-content .answer-text { margin: 0; color: var(--ge-text); }
+
+/* Tables must scroll inside their own box, never the page. */
+.ge-content .table-scroll {
+  overflow-x: auto; margin-block: 1.5rem; border-radius: var(--ge-r-md);
+  border: 1px solid var(--ge-border);
+}
+.ge-content .table-scroll table { margin: 0; }

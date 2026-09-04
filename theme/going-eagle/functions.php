@@ -94,6 +94,21 @@ function going_eagle_assets(): void {
 }
 add_action( 'wp_enqueue_scripts', 'going_eagle_assets', 20 );
 
+/**
+ * Wrap post content in a stable marker class so this theme's own CSS (callouts, the
+ * answer-first box, wide tables) can target it without depending on Kadence's
+ * internal markup, which this child theme does not control and should not assume.
+ * Priority 5 so it runs before going_eagle_prepend_byline() (reviewer.php, default
+ * priority): the byline stays outside this wrapper, the article body goes inside it.
+ */
+function going_eagle_wrap_content( string $content ): string {
+	if ( ! is_singular( array( 'post', 'page' ) ) || ! in_the_loop() || ! is_main_query() ) {
+		return $content;
+	}
+	return '<div class="ge-content">' . $content . '</div>';
+}
+add_filter( 'the_content', 'going_eagle_wrap_content', 5 );
+
 require_once GOING_EAGLE_DIR . '/inc/reviewer.php';
 require_once GOING_EAGLE_DIR . '/inc/schema.php';
 require_once GOING_EAGLE_DIR . '/inc/tools.php';
