@@ -112,3 +112,4 @@ add_filter( 'the_content', 'going_eagle_wrap_content', 5 );
 require_once GOING_EAGLE_DIR . '/inc/reviewer.php';
 require_once GOING_EAGLE_DIR . '/inc/schema.php';
 require_once GOING_EAGLE_DIR . '/inc/tools.php';
+require_once GOING_EAGLE_DIR . '/inc/setup.php';
