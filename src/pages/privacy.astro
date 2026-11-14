@@ -1,38 +1,169 @@
 ---
 import Page from '../layouts/Page.astro';
 const trail = [{ name: 'Home', href: '/' }, { name: 'Privacy', href: '/privacy/' }];
+
+/*
+ * Every statement on this page must match what the site actually does. Before adding an
+ * analytics tool, a newsletter, a contact form, comments or an embed, update this page
+ * first and bump LAST_UPDATED in the same commit.
+ */
+const LAST_UPDATED = '14 November 2026';
 ---
 <Page
   title="Privacy Policy"
-  description="What data Going Eagle collects, what it does not collect, and how the tools on this site handle the information you enter."
-  intro="The short version: our tools run entirely in your browser and we do not store what you type into them."
+  description="What Going Eagle collects when you visit, what it never collects, which outside services see your visit, and the choices you have."
+  intro="The short version: there are no accounts, ads or analytics on Going Eagle, and the calculators never send what you type to us. A few things happen automatically whenever any website loads, and this page names each one."
   trail={trail}
 >
-  <h2>The calculators</h2>
+  <div class="callout">
+    <p class="callout-title">Last updated</p>
+    <p>{LAST_UPDATED}. When this policy changes, this date changes with it.</p>
+  </div>
+
+  <h2>Who we are</h2>
   <p>
-    Every tool on this site — the ball flight diagnostic, the handicap calculator and the rest —
-    runs as JavaScript in your own browser. Scores, ratings and answers you enter are never
-    transmitted to us, never written to a database, and disappear when you close the tab.
+    Going Eagle is an independent golf instruction and equipment website. In this policy, "we"
+    and "us" mean the people who run it. The site operator's details and a contact address will
+    be listed on our <a href="/contact/">contact page</a> once the site mailbox is set up.
   </p>
 
-  <h2>Analytics</h2>
+  <h2>What is collected, and by whom</h2>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">What</th><th scope="col">Who receives it</th><th scope="col">Why</th><th scope="col">How long it is kept</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Anything you type into a calculator</th>
+          <td>No one. It never leaves your browser.</td>
+          <td>To work out your result</td>
+          <td>Until you close the tab</td>
+        </tr>
+        <tr>
+          <th scope="row">Standard request data: IP address, browser type, the page you asked for, the time, and the page that linked you here</th>
+          <td>Our web host, Hostinger</td>
+          <td>To deliver the page, keep the site secure and find faults</td>
+          <td>In server logs, for the period the host keeps them</td>
+        </tr>
+        <tr>
+          <th scope="row">Your IP address and browser details, when our typefaces load</th>
+          <td>Google, through Google Fonts</td>
+          <td>To send your browser the fonts the site uses</td>
+          <td>Under <a href="https://policies.google.com/privacy" rel="noopener">Google's privacy policy</a></td>
+        </tr>
+        <tr>
+          <th scope="row">Your light or dark display choice</th>
+          <td>No one. It stays in your browser.</td>
+          <td>So the site remembers it next time</td>
+          <td>Until you clear your site data</td>
+        </tr>
+        <tr>
+          <th scope="row">A record that you clicked through from Going Eagle</th>
+          <td>The retailer, if you follow an affiliate link</td>
+          <td>So the retailer can credit us for a sale</td>
+          <td>Under that retailer's privacy policy</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>That table is the whole list. We do not ask for your name, and there is nothing to sign up for.</p>
+
+  <h2>The calculators</h2>
   <p>
-    We may use privacy-respecting analytics to understand which pages are useful. When analytics
-    are enabled, this page will name the provider and describe exactly what is collected. We will
-    not add tracking without updating this page first.
+    Every tool on this site, including the ball flight diagnostic and the handicap calculator,
+    runs as JavaScript in your own browser. Scores, course ratings and answers you enter are
+    never sent to us, never written to a database, and disappear when you close the tab.
+  </p>
+
+  <h2>Cookies and browser storage</h2>
+  <p>
+    Going Eagle sets no tracking or advertising cookies. If you use the light/dark switch, your
+    choice is saved in your browser's local storage. That is not a cookie, it is never sent to
+    us, and clearing your site data removes it. A retailer may set its own cookie after you click
+    an affiliate link, which the next section covers.
   </p>
 
   <h2>Affiliate links</h2>
   <p>
-    When you click an affiliate link, the destination retailer may set a cookie so they can
-    attribute a purchase to us. That cookie is set by them, under their privacy policy, not ours.
-    Our <a href="/affiliate-disclosure/">affiliate disclosure</a> explains the arrangement.
+    Some product links on this site may be affiliate links. When you click one, the destination
+    retailer may set a cookie so it can attribute a purchase to us. That cookie is set by the
+    retailer, under its privacy policy, not ours. Affiliate programs report sales to us as products
+    and commission due, not the identity of the buyer. Our
+    <a href="/affiliate-disclosure/">affiliate disclosure</a> explains the arrangement.
   </p>
 
-  <h2>Your browser storage</h2>
+  <h2>Analytics and advertising</h2>
   <p>
-    We store one thing locally: your light or dark theme preference. It stays in your browser,
-    is never sent to us, and clearing your site data removes it.
+    We do not run analytics, advertising networks or social media tracking pixels. If we add
+    analytics, this page will name the provider and describe exactly what it collects before it
+    is switched on.
+  </p>
+
+  <h2>Information you send us</h2>
+  <p>
+    There are no accounts, newsletters, comments or contact forms on Going Eagle today. If you
+    email us once our address is published, we use your message only to reply and to act on any
+    correction you send, and we delete it when it is no longer needed for that. If we add a form,
+    comments or a newsletter, this page will be updated first, naming the service that handles them.
+  </p>
+
+  <h2>Why we are allowed to process this</h2>
+  <p>
+    For visitors in the UK and the European Economic Area: request data and font loading are
+    processed on the basis of our legitimate interest in delivering a working, secure website.
+    Saving your display choice is something you ask for when you press the switch. We do not
+    rely on consent for anything, because we collect nothing optional.
+  </p>
+
+  <h2>Sharing and selling</h2>
+  <p>
+    We do not sell personal information, and we do not share it for targeted advertising. The
+    only outside services that see your visit are the ones named in the table above. We would
+    disclose information beyond that only if the law required us to.
+  </p>
+
+  <h2>Where your data goes</h2>
+  <p>
+    Our host and Google may process the request data described above in countries other than
+    yours, including the United States. Each describes the safeguards it uses in its own
+    privacy policy.
+  </p>
+
+  <h2>Your rights</h2>
+  <p>Depending on where you live, you may have the right to:</p>
+  <ul>
+    <li>ask what personal information we hold about you, and get a copy</li>
+    <li>ask us to correct or delete it</li>
+    <li>object to or restrict how we use it</li>
+    <li>opt out of the sale or sharing of personal information, which we do not do</li>
+    <li>complain to your data protection authority, such as the Information Commissioner's Office in the UK</li>
+  </ul>
+  <p>
+    Because we hold no accounts and no names, we usually have nothing that identifies you. If you
+    have emailed us, we can find and delete that message. Requests go through our
+    <a href="/contact/">contact page</a>, and we will not treat you differently for making one.
+  </p>
+
+  <h2>Children</h2>
+  <p>
+    Going Eagle is written for adult golfers and is not directed at children under 13. We do not
+    knowingly collect personal information from children. If you believe a child has sent us
+    their details, contact us and we will delete them.
+  </p>
+
+  <h2>Security</h2>
+  <p>
+    Every page is served over HTTPS, so what passes between your browser and the site is
+    encrypted. Because we store so little, there is very little to protect, and that is deliberate.
+  </p>
+
+  <h2>Changes to this policy</h2>
+  <p>
+    When we change what the site collects, we update this page before the change goes live and
+    move the date at the top. We do not make changes that collect more about you without saying so here.
   </p>
 
   <h2>Contact</h2>
